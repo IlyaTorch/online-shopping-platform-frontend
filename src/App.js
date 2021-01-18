@@ -1,40 +1,22 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import logo from './logo.svg';
+import React from 'react';
+import {Switch, Route} from "react-router-dom";
+
 import './App.css';
+
+import HomePage from "./pages/homepage/homepage.component";
+import Header from "./components/header/header.component";
 
 
 function App() {
-  const [shops, setShops] = useState([])
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: "http://127.0.0.1:8000/api/shops/?format=json"
-    }).then(response => setShops(response.data))
-  }, [])
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <ul>
-          {shops.map(shop => (
-              <li key={shop.id}>{shop.title}</li>
-          ))}
-        </ul>
-
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div>
+            <Header/>
+            <Switch>
+                <Route exact path='/' component={HomePage} />
+                />
+            </Switch>
+        </div>
+    );
 }
 
 export default App;
