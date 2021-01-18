@@ -8,21 +8,14 @@ import CustomButton from "../custom-button/custom-button.component";
 const Item = ({item}) => {
     return (
         <div className="item">
-            <div
-                className="image"
-                style={
-                    {
-                        // backgroundImage: `url(https://i.ibb.co/KV18Ysr/floral-skirt.png)`
-                    }
-                }
-            />
-            <div className="collection-footer">
-                <span className="name">{item.title}</span>
-                <span className="price">{item.price}</span>
+            <div className="image-container">
+                <img src="" alt="item"/>
             </div>
-            <CustomButton>
-                Add to cart
-            </CustomButton>
+
+            <span className="name">{item.title}</span>
+            <span className="price">{item.price}$</span>
+            <CustomButton>Add To Cart</CustomButton>
+
         </div>
     )
 }

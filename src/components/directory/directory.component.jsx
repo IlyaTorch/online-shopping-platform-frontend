@@ -20,7 +20,7 @@ class Directory extends React.Component {
 
     render() {
         return (
-             <div className="directory-menu">
+             <div className="directory-container">
                  <ItemsList shopItems={this.state.lastAddedItems} />
              </div>
         )
