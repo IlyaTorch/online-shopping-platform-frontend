@@ -1,6 +1,7 @@
 import React from 'react';
 import './directory.styles.scss'
 
+import SearchForm from "../search-form/search-form.component";
 import ItemsList from "../items-list/items-list.component";
 
 
@@ -21,6 +22,10 @@ class Directory extends React.Component {
     render() {
         return (
              <div className="directory-container">
+                 <div className="search-container">
+                     <SearchForm fieldForSearch={'shop'}/>
+                     <SearchForm fieldForSearch={'item'}/>
+                 </div>
                  <ItemsList shopItems={this.state.lastAddedItems} />
              </div>
         )
