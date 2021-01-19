@@ -28,8 +28,8 @@ class SearchForm extends React.Component {
             let url = `http://127.0.0.1:8000/api/?format=json&search_by_${this.fieldForSearch}=${search}`;
 
             this.props.refreshItems(url);
-            this.setState({search: ''});
 
+            this.setState({search: ''})
         } catch (error) {
             console.error(error);
         }
@@ -38,6 +38,7 @@ class SearchForm extends React.Component {
     handleChange = event => {
         const {value, name} = event.target;
         this.setState({[name]: value});
+        console.log(this.state);
     }
 
     render() {
@@ -51,6 +52,7 @@ class SearchForm extends React.Component {
                         type="text"
                         label="Search by title"
                         handleChange={this.handleChange}
+                        value={this.state.search}
                     />
 
                     <div className="buttons">
