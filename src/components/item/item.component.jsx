@@ -9,7 +9,7 @@ const Item = ({item}) => {
     return (
         <div className="item">
             <div className="image-container">
-                <img src="" alt="item"/>
+                <img src={item.images[0]} alt="item"/>
             </div>
 
             <span className="name">{item.title}</span>
