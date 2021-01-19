@@ -1,4 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
+import {refreshItems} from "../../redux/items/items.actions";
 
 import './search-form.styles.scss';
 import FormInput from "../form-input/form-input.component";
@@ -10,28 +13,44 @@ class SearchForm extends React.Component {
         super(props);
 
         this.fieldForSearch = props.fieldForSearch;
+
+        this.state = {
+            search: ''
+        }
     }
 
-    handleSubmit = async event => {
+    handleSubmit = event => {
         event.preventDefault();
 
+        const {search} = this.state;
+
         try {
-            console.log(event);
+            let url = `http://127.0.0.1:8000/api/?format=json&search_by_${this.fieldForSearch}=${search}`;
+
+            this.props.refreshItems(url);
+            this.setState({search: ''});
+
         } catch (error) {
             console.error(error);
         }
     }
 
+    handleChange = event => {
+        const {value, name} = event.target;
+        this.setState({[name]: value});
+    }
+
     render() {
         return (
             <div className="search-form">
-                <h2 className="search-header">FIND ITEMS BY {this.fieldForSearch.toUpperCase()} TITLE</h2>
+                <h2 className="search-header">FILTER ITEMS BY {this.fieldForSearch.toUpperCase()} TITLE</h2>
 
                 <form onSubmit={this.handleSubmit} method="GET">
                     <FormInput
                         name="search"
                         type="text"
                         label="Search by title"
+                        handleChange={this.handleChange}
                     />
 
                     <div className="buttons">
@@ -45,5 +64,9 @@ class SearchForm extends React.Component {
     }
 }
 
+const mapDispatchToProps = dispatch => ({
+    refreshItems: url => dispatch(refreshItems(url))
+})
 
-export default SearchForm;
+
+export default connect(null, mapDispatchToProps)(SearchForm);

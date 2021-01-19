@@ -3,20 +3,17 @@ import './directory.styles.scss'
 
 import SearchForm from "../search-form/search-form.component";
 import ItemsList from "../items-list/items-list.component";
+import {connect} from "react-redux";
+import {refreshItems} from "../../redux/items/items.actions";
 
 
 class Directory extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            lastAddedItems: [],
-        }
     }
 
     componentDidMount() {
-        fetch("http://127.0.0.1:8000/api/?format=json")
-            .then(response => response.json())
-            .then(items => this.setState({lastAddedItems: items}));
+        this.props.refreshItems('http://127.0.0.1:8000/api/?format=json');
     }
 
     render() {
@@ -26,7 +23,7 @@ class Directory extends React.Component {
                      <SearchForm fieldForSearch={'shop'}/>
                      <SearchForm fieldForSearch={'item'}/>
                  </div>
-                 <ItemsList shopItems={this.state.lastAddedItems} />
+                 <ItemsList shopItems={this.props.lastAddedItems} />
              </div>
         )
 
@@ -34,4 +31,13 @@ class Directory extends React.Component {
 }
 
 
-export default Directory;
+const mapStateToProps = (state) => ({
+    lastAddedItems: state.items.itemList
+});
+
+const mapDispatchToProps = dispatch => ({
+    refreshItems: url => dispatch(refreshItems(url))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Directory);
