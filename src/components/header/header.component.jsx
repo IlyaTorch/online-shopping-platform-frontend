@@ -13,8 +13,8 @@ const Header = () => (
         </Link>
 
         <div className="options">
-            <Link className="option" to="/shop">
-                SHOP
+            <Link className="option" to="/shops">
+                SHOPS
             </Link>
             <Link className="option" to="/shop">
                 CONTACT
