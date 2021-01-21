@@ -26,7 +26,12 @@ class ShopPage extends React.Component {
 
     render() {
         return (
-            <div className="shop-page-container">
+            <div
+                className="shop-page-container"
+                style={
+                    {backgroundImage: `url(${this.state.shop.background_image})`}
+                }
+            >
                 <h1 className="shop-title">{this.state.shop.title}</h1>
                 {
                     this.state.shopItems.map(item => <Item key={item.id} item={item}/>)
