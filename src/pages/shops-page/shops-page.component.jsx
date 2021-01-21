@@ -3,6 +3,7 @@ import React from 'react';
 import './shops-page.styles.scss';
 
 import CustomButton from "../../components/custom-button/custom-button.component";
+import {Link} from "react-router-dom";
 
 
 class ShopsPage extends React.Component {
@@ -34,7 +35,7 @@ class ShopsPage extends React.Component {
                             }
                         >
                             <span className="shop-title">{shop.title}</span>
-                            <CustomButton>OPEN SHOP PAGE</CustomButton>
+                            <Link to={'shops/' + shop.id}> <CustomButton>OPEN SHOP PAGE</CustomButton> </Link>
                         </div>
                     ))
                 }
