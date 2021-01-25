@@ -1,0 +1,4 @@
+export const ShopItemsActionTypes = {
+    UPDATE_ITEMS_LIST: 'UPDATE_ITEMS_LIST',
+    UPDATE_DISPLAYED_ITEMS: 'UPDATE_DISPLAYED_ITEMS',
+};
