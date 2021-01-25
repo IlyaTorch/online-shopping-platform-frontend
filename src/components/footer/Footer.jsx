@@ -9,7 +9,7 @@ const Footer = () => (
     <div className="footer">
          <Link className="option" to="/contact">
                 CONTACT US
-            </Link>
+        </Link>
     </div>
 );
 

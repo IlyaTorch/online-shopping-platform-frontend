@@ -5,8 +5,8 @@ import {createStructuredSelector} from "reselect";
 
 import './searchForm.scss';
 
-import {updateDisplayedItems} from "../../redux/shopItems/shopItemsActions";
-import {selectItemList} from "../../redux/shopItems/shopItemsSelectors";
+import {updateItemsByRequestFromSearchForm, displayItemsByRequestFromSearchForm} from "../../redux/shop/shopActions";
+import {selectItemList} from "../../redux/shop/shopSelectors";
 
 
 import FormInput from "../form-input/FormInput";
@@ -16,13 +16,15 @@ class SearchForm extends React.Component {
 
     handleChange = event => {
         const {value} = event.target;
-        this.props.updateDisplayedItems(this.props.items.filter(item => item.title.toLowerCase().includes(value)));
+        this.props.updateItemsByRequestFromSearchForm(this.props.items.filter(item => item.title.toLowerCase().includes(value)));
     }
 
     render() {
+        const searchOnClick = () => this.props.displayItemsByRequestFromSearchForm();
+
         return (
-            <div className="search-form">
-                <form onSubmit={this.handleSubmit} method="GET">
+            <div className="search-form" onClick={searchOnClick}>
+                <form method="GET">
                     <FormInput
                         name="search"
                         type="text"
@@ -42,7 +44,9 @@ const mapStateToProps = createStructuredSelector({
 
 
 const mapDispatchToProps = dispatch => ({
-    updateDisplayedItems: items => dispatch(updateDisplayedItems(items))
+    updateItemsByRequestFromSearchForm: items => dispatch(updateItemsByRequestFromSearchForm(items)),
+    displayItemsByRequestFromSearchForm: () => dispatch(displayItemsByRequestFromSearchForm())
+
 });
 
 

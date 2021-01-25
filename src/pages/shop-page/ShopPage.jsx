@@ -2,141 +2,91 @@ import React from 'react';
 import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
 
-import {API_SHOPS_URL, API_CATEGORIES_URL} from "../../url-data/urlData";
+import {API_SHOPS_URL} from "../../url-data/urlData";
 
 import './shopPage.scss';
 
-import Item from "../../components/item/Item";
 import About from "../../components/about/About";
-import CustomButton from "../../components/custom-button/CustomButton";
-import CategoriesDropdown from "../../components/categories-dropdown/CategoriesDropdown";
-import SearchForm from "../../components/search-form/SearchForm";
+import ShopHeader from "../../components/shop-header/ShopHeader";
+import ItemsList from "../../components/items-list/ItemsList";
+import WithSpinner from "../../components/with-spinner/withSpinner";
 
-import {selectDisplayedItems, selectItemList} from "../../redux/shopItems/shopItemsSelectors";
-import {updateDisplayedItems, updateItemList} from "../../redux/shopItems/shopItemsActions";
+import {
+    selectDisplayingAllItemsStatus, selectDisplayingLimitedItems, selectDisplayingItemsFromCategory,
+    selectDisplayingAboutComponentStatus,
+
+    selectItemList,
+    selectLimitedItems,
+    selectItemsFromCategory, selectDisplayingItemsByRequestFromSearchForm, selectItemsByRequestFromSearchForm
+} from "../../redux/shop/shopSelectors";
+
+import {
+    updateItemList,
+    updateItemsByRequestFromSearchForm
+} from "../../redux/shop/shopActions";
+
+import {setShopItemsToReduxState} from "../../utils/utils";
+
+
+const ShopHeaderWithSpinner = WithSpinner(ShopHeader);
+const ItemsListWithSpinner = WithSpinner(ItemsList);
 
 
 class ShopPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.shopId = this.props.match.params.id;
+        this.shopId = this.props.match.params.shopId;
 
         this.state = {
             shop: {},
-            categories: [],
-            displayAboutComponent: false,
-            displayCategoriesDropdown: false
+            loadingShop: true,
+            loadingItems: true
         };
+    }
 
-        fetch(`${API_SHOPS_URL}${this.shopId}`)
+    componentDidMount () {
+        fetch(`${API_SHOPS_URL}/${this.shopId}`)
             .then(response => response.json())
             .then(shop => {
                 this.setState({shop: shop});
+                this.setState({loadingShop: false});
             });
-
-        this.setShopItemsToReduxState();
-
-        fetch(API_CATEGORIES_URL)
-            .then(response => response.json())
-            .then(categories => {
-                this.setState({categories: categories});
-            });
+        setShopItemsToReduxState(this.shopId, this);
     }
-
-
-    setShopItemsToReduxState = () => {
-        fetch(`${API_SHOPS_URL}${this.shopId}/items/`)
-            .then(response => response.json())
-            .then(items => {
-                this.props.updateItemList(items);
-                this.props.updateDisplayedItems(items);
-            });
-    }
-
-    setAllShopItemsToDisplayedItems = () => {
-        this.props.updateDisplayedItems(this.props.shopItems);
-    }
-
-    setItemsFromLimitOfferToDisplayedItems = () => {
-        this.props.updateDisplayedItems(this.props.shopItems.filter(item => item.limit_offer_period != null));
-    }
-
-    changeDisplayAboutState = () => {
-        this.setState({displayAboutComponent: !this.state.displayAboutComponent});
-    }
-
-    isDisplayAboutActive = () => this.state.displayAboutComponent;
 
     render() {
         return (
             <div className="shop-page-container">
-                <h1 className="shop-title">{this.state.shop.title}</h1>
-                <div className="shop-header">
+                <ShopHeaderWithSpinner
+                    isLoading={this.state.loadingShop}
+                    shop={this.state.shop}
+                    history={this.props.history}
+                    match={this.props.match}
+                />
 
-                    <img src={this.state.shop.image} alt={this.state.shop.title} />
-
-                    <div className="shop-info">
-                        <CustomButton
-                            onClick={() => {
-                                    this.isDisplayAboutActive() && this.changeDisplayAboutState();
-                                    this.setAllShopItemsToDisplayedItems();
-                                    this.setState({displayCategoriesDropdown: false});
-                                }
-                            }
-                        >
-                            ALL ITEMS
-                        </CustomButton>
-                        <CustomButton
-                            onClick={() => {
-                                    this.setState({displayCategoriesDropdown: !this.state.displayCategoriesDropdown});
-                                }
-                            }
-                        >
-                            CATEGORIES
-                        </CustomButton>
-                        {
-                            this.state.displayCategoriesDropdown &&
-                                <CategoriesDropdown categories={this.state.categories}/>
-                        }
-
-                        <div className="shop-search-form">
-                            <SearchForm />
-                        </div>
-
-                        <CustomButton
-                            onClick={() => {
-                                    this.isDisplayAboutActive() && this.changeDisplayAboutState();
-                                    this.setItemsFromLimitOfferToDisplayedItems();
-                                    this.setState({displayCategoriesDropdown: false});
-                                }
-                            }
-                        >
-                            LIMITED OFFER
-                        </CustomButton>
-
-                        <CustomButton
-                            onClick={() => {
-                                    this.changeDisplayAboutState();
-                                    this.setState({displayCategoriesDropdown: false});
-                                }
-                            }
-                        >
-                            ABOUT
-                        </CustomButton>
-                    </div>
+                <div className="items-container">
+                {
+                    this.props.displayAllItems ? <ItemsListWithSpinner
+                                                    isLoading={this.state.loadingItems}
+                                                    items={this.props.shopItems}
+                                                  /> :
+                        this.props.displayLimitedItems ? <ItemsListWithSpinner
+                                                            isLoading={this.state.loadingItems}
+                                                            items={this.props.limitedItems}
+                                                          /> :
+                            this.props.displayItemsByRequestFromSearchForm ? <ItemsListWithSpinner
+                                                                                    isLoading={this.state.loadingItems}
+                                                                                    items={this.props.itemsByRequestFromSearchForm}
+                                                                                  /> :
+                                this.props.displayItemsFromCategory ? <ItemsListWithSpinner
+                                                                        isLoading={this.state.loadingItems}
+                                                                        items={this.props.itemsFromCategory}
+                                                                       /> :
+                                    this.props.displayAbout ? <About infoAbout={this.state.shop.about}/> : null
+                }
                 </div>
 
-                {
-                    this.state.displayAboutComponent
-                        ? <About infoAbout={this.state.shop.about}/>
-                        :
-                            <div className="items-container">
-                                {
-                                    this.props.displayedItems.map(item => <Item key={item.id} item={item}/>)
-                                }
-                            </div>
-                }
             </div>
         )
     }
@@ -144,12 +94,20 @@ class ShopPage extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
     shopItems: selectItemList,
-    displayedItems: selectDisplayedItems
+    limitedItems: selectLimitedItems,
+    itemsFromCategory: selectItemsFromCategory,
+    itemsByRequestFromSearchForm: selectItemsByRequestFromSearchForm,
+
+    displayAllItems: selectDisplayingAllItemsStatus,
+    displayLimitedItems: selectDisplayingLimitedItems,
+    displayItemsFromCategory: selectDisplayingItemsFromCategory,
+    displayItemsByRequestFromSearchForm: selectDisplayingItemsByRequestFromSearchForm,
+    displayAbout: selectDisplayingAboutComponentStatus
 });
 
 const mapDispatchToProps = dispatch => ({
     updateItemList: items => dispatch(updateItemList(items)),
-    updateDisplayedItems: items => dispatch(updateDisplayedItems(items))
+    updateDisplayedItems: items => dispatch(updateItemsByRequestFromSearchForm(items)),
 });
 
 

@@ -1,10 +1,10 @@
 import {combineReducers} from "redux";
 
-import shopItemsReducer from "./shopItems/shopItemsReducer.js";
+import shopReducer from "./shop/shopReducer.js";
 import shopsReducer from "./shops/shopsReducer";
 
 
 export default combineReducers({
-    shopItems: shopItemsReducer,
+    shop: shopReducer,
     shops: shopsReducer
 });
