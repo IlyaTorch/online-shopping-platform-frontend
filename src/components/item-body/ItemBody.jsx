@@ -1,12 +1,15 @@
 import React from "react";
+import {connect} from 'react-redux';
 
 import './itemBodyStyles.scss';
 
 import ImageSlider from "../image-slider/ImageSlider";
 import CustomButton from "../custom-button/CustomButton";
 
+import {addItem} from "../../redux/cart/cartActions";
 
-const ItemBody = ({item}) => (
+
+const ItemBody = ({item, addItem}) => (
     <div className="item-container">
         {
             <div className="item-images">
@@ -50,10 +53,14 @@ const ItemBody = ({item}) => (
             }
 
             <p className="option"><b>DESCRIPTION: </b><br/>{item.description}</p>
-            <CustomButton>ADD TO CART</CustomButton>
+            <CustomButton onClick={() => addItem(item)}>ADD TO CART</CustomButton>
         </div>
     </div>
 );
 
+const mapDispatchToProps = dispatch => ({
+    addItem: item => dispatch(addItem(item))
+})
 
-export default ItemBody;
+
+export default connect(null, mapDispatchToProps)(ItemBody);
