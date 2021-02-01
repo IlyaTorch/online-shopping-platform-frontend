@@ -10,8 +10,13 @@ const CartItem = ({item}) => (
             <span className="title">
                 {item.title}
             </span>
-
-            <span className="price">
+            <span className="option">
+                SIZE: {item.size}
+            </span>
+            <span className="option">
+                COLOR: {item.color}
+            </span>
+            <span className="option">
                 {item.quantity} x ${item.price}
             </span>
         </div>

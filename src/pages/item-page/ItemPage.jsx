@@ -72,12 +72,12 @@ class ItemPage extends React.Component {
     render() {
         return (
             <div>
-                <ShopHeaderWithSpinner
-                    isLoading={this.state.loadingShop}
-                    shop={this.state.shop}
-                    history={this.props.history}
-                    match={this.props.match}
-                />
+                {/*<ShopHeaderWithSpinner*/}
+                {/*    isLoading={this.state.loadingShop}*/}
+                {/*    shop={this.state.shop}*/}
+                {/*    history={this.props.history}*/}
+                {/*    match={this.props.match}*/}
+                {/*/>*/}
                 <ItemBodyWithSpinner
                     isLoading={this.state.loadingItem}
                     item={this.state.item}
