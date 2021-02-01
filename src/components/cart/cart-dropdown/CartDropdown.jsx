@@ -28,9 +28,7 @@ const CartDropdown = ({cartItems, history, dispatch}) => {
                 }
             </div>
 
-            <CustomButton
-                onClick={}
-            >
+            <CustomButton onClick={checkoutOnClick}>
                 GO TO CHECKOUT
             </CustomButton>
         </div>
