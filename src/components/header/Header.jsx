@@ -30,7 +30,7 @@ const Header = (props) => (
                             alignItems: 'center'
                         }
                     }>
-                    <SearchForm />
+                    {props.location.pathname === '/' && <SearchForm />}
                     <Link className="option" to="/shops">SHOPS</Link>
                     </span>
                 : null
