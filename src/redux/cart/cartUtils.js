@@ -37,3 +37,24 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
         : cartItem
     );
 };
+
+
+export const updateQuantityItemsInCart = (cartItems, {item: itemToUpdateQuantity, quantity: newQuantity}) => {
+    newQuantity = parseInt(newQuantity);
+
+    if (newQuantity === 0 || isNaN(newQuantity)) {
+        return cartItems.filter(cartItem =>
+                                            cartItem.id !== itemToUpdateQuantity.id  ||
+                                            cartItem.size !== itemToUpdateQuantity.size ||
+                                            cartItem.color !== itemToUpdateQuantity.color
+        );
+    } else {
+        return cartItems.map(cartItem =>
+        cartItem.id === itemToUpdateQuantity.id &&
+        cartItem.size === itemToUpdateQuantity.size &&
+        cartItem.color === itemToUpdateQuantity.color
+        ? {...cartItem, quantity: newQuantity}
+        : cartItem
+    );
+    }
+};
