@@ -10,6 +10,7 @@ import HomePage from "./pages/homepage/HomePage";
 import ShopsPage from "./pages/shops-page/ShopsPage";
 import ShopPage from "./pages/shop-page/ShopPage";
 import ItemPage from "./pages/item-page/ItemPage";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
 import Footer from "./components/footer/Footer";
 
 
@@ -23,6 +24,7 @@ const App = () => (
                 <Route path='' component={Header}/>
                 <Switch>
                     <Route exact path='/' component={HomePage} />
+                    <Route exact path='/checkout' component={CheckoutPage} />
                     <Route exact path='/shops' component={ShopsPage} />
                     <Route exact path='/shops/:shopId' component={ShopPage} />
                     <Route exact path='/shops/:shopId/:itemId' component={ItemPage} />
