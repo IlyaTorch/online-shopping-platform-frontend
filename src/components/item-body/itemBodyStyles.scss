@@ -1,0 +1,30 @@
+.item-container {
+  width: 50%;
+  margin: 100px auto 0;
+
+  display: flex;
+
+  .item-info {
+    margin-left: 40px;
+    margin-bottom: 70px;
+
+    .item-title {
+      margin-top: 0;
+      font-size: 40px;
+      border-bottom: 1px solid darkgrey;
+    }
+
+    .option {
+      font-size: 22px;
+    }
+
+    .special-offer {
+      color: red;
+    }
+
+    select {
+      width: 70%;
+      font-size: 18px;
+    }
+  }
+}

@@ -4,7 +4,8 @@ import {createStructuredSelector} from "reselect";
 
 import './shopsPage.scss';
 
-import Shop from "../../components/shop/Shop";
+import WithSpinner from "../../components/with-spinner/withSpinner";
+import ShopsList from "../../components/shopsList/ShopsList";
 
 import {selectShops} from "../../redux/shops/shopsSelectors";
 import {updateShopsList} from "../../redux/shops/shopsActions";
@@ -12,24 +13,29 @@ import {updateShopsList} from "../../redux/shops/shopsActions";
 import {API_SHOPS_URL} from "../../url-data/urlData";
 
 
+const ShopsListWithSpinner = WithSpinner(ShopsList);
+
 class ShopsPage extends React.Component {
     constructor (props) {
         super (props);
 
-        fetch(API_SHOPS_URL)
+        this.state = {
+            loading: true
+        }
+    }
+
+    componentDidMount () {
+        fetch(`${API_SHOPS_URL}/`)
             .then(response => response.json())
             .then(shops => {
                 this.props.updateShopsList(shops);
+                this.setState({loading: false});
             });
     }
 
     render() {
         return (
-            <div className="shops-container">
-                {
-                    this.props.shops.map(shop => <Shop key={shop.id} shop={shop}/>)
-                }
-            </div>
+            <ShopsListWithSpinner isLoading={this.state.loading} shops={this.props.shops} />
         )
     }
 }

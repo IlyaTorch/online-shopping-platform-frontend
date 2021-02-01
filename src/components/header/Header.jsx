@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import './header.scss';
 
 import {ReactComponent as Logo} from '../../assets/crown.svg'
+
 import CartIcon from "../cart-icon/CartIcon";
 import SearchForm from "../search-form/SearchForm";
 
@@ -16,7 +17,6 @@ const Header = (props) => (
 
         <div className="options">
             {
-
                 !props.location.pathname.includes('/shops/')
                 ?
                     <span style={

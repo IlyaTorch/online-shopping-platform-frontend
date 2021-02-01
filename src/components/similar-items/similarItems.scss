@@ -1,0 +1,9 @@
+.similar-items-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .similar-items-list {
+    display: flex;
+  }
+}

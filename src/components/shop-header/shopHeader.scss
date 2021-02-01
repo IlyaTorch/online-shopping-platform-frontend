@@ -1,0 +1,30 @@
+.shop-header {
+    margin-bottom: 50px;
+    border-bottom: 1px solid darkgrey;
+
+    img {
+      display: block;
+      width: 50%;
+      height: 100%;
+      margin: auto;
+    }
+
+    .shop-title {
+      font-size: 48px;
+      margin-top: 0;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .shop-info {
+      display: flex;
+      justify-content: space-around;
+      padding: 25px 55px 25px;
+    }
+
+    .shop-search-form {
+      width: 450px;
+      border: 1px solid;
+      padding: 0 25px;
+    }
+  }
