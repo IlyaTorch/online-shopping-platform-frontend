@@ -53,12 +53,6 @@ export const updateItemsFromCategory = items => (
     }
 );
 
-export const updateCategories = categories => (
-    {
-        type: ShopItemsActionTypes.UPDATE_CATEGORIES,
-        payload: categories
-    }
-);
 
 /////////FETCHING SHOP////////
 export const fetchShopStart = () => ({
