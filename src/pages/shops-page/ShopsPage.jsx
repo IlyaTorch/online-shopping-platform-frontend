@@ -7,47 +7,36 @@ import './shopsPage.scss';
 import WithSpinner from "../../components/with-spinner/withSpinner";
 import ShopsList from "../../components/shopsList/ShopsList";
 
-import {selectShops} from "../../redux/shops/shopsSelectors";
-import {updateShopsList} from "../../redux/shops/shopsActions";
+import {selectShops, selectIsShopsFetching, selectIsShopsLoading} from "../../redux/platform/platformSelectors";
 
-import {API_SHOPS_URL} from "../../url-data/urlData";
+import {fetchShopsStartAsync} from "../../redux/platform/platformActions";
 
 
 const ShopsListWithSpinner = WithSpinner(ShopsList);
 
+
 class ShopsPage extends React.Component {
-    constructor (props) {
-        super (props);
-
-        this.state = {
-            loading: true
-        }
-    }
-
     componentDidMount () {
-        fetch(`${API_SHOPS_URL}/`)
-            .then(response => response.json())
-            .then(shops => {
-                this.props.updateShopsList(shops);
-                this.setState({loading: false});
-            });
+        this.props.fetchShopsStartAsync();
     }
 
     render() {
         return (
-            <ShopsListWithSpinner isLoading={this.state.loading} shops={this.props.shops} />
-        )
+            <ShopsListWithSpinner isLoading={!this.props.isShopsLoaded} shops={this.props.shops} />
+        );
     }
 }
 
 
 const mapStateToProps = createStructuredSelector({
-    shops: selectShops
+    shops: selectShops,
+    isShopsFetching: selectIsShopsFetching,
+    isShopsLoaded: selectIsShopsLoading
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateShopsList: shops => dispatch(updateShopsList(shops))
-})
+    fetchShopsStartAsync: () => dispatch(fetchShopsStartAsync())
+});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopsPage);

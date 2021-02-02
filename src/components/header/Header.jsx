@@ -21,7 +21,7 @@ const Header = (props) => (
 
         <div className="options">
             {
-                !props.location.pathname.includes('/shops/')
+                !props.location.pathname.includes('/platform/')
                 ?
                     <span style={
                         {
