@@ -1,4 +1,5 @@
 import {ShopItemsActionTypes} from "./shopTypes";
+import {API_SHOPS_URL} from "../../url-data/urlData";
 
 
 export const displayAllItems = () => (
@@ -58,3 +59,32 @@ export const updateCategories = categories => (
         payload: categories
     }
 );
+
+/////////FETCHING SHOP ITEMS////////
+export const fetchItemsStart = () => ({
+    type: ShopItemsActionTypes.FETCH_ITEMS_START,
+});
+
+export const fetchItemsSuccess = items => ({
+    type: ShopItemsActionTypes.FETCH_ITEMS_SUCCESS,
+    payload: items
+});
+
+export const fetchItemsFailure = errorMessage => ({
+    type: ShopItemsActionTypes.FETCH_ITEMS_FAILURE,
+    payload: errorMessage
+});
+
+export const fetchItemsStartAsync = (shopId) => {
+    return dispatch => {
+        dispatch(fetchItemsStart());
+
+        fetch(`${API_SHOPS_URL}/${shopId}/items/`)
+        .then(response => response.json())
+        .then(items => {
+            dispatch(fetchItemsSuccess(items));
+            dispatch(updateItemsByRequestFromSearchForm(items));
+        })
+        .catch(error => dispatch(fetchItemsFailure(error.message)));
+    };
+};

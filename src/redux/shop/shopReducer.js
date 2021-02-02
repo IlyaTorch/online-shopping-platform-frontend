@@ -2,7 +2,11 @@ import {ShopItemsActionTypes} from "./shopTypes";
 
 
 const INITIAL_STATE = {
-    itemsList: [],
+    itemsList: null,
+    isItemsFetching: false,
+    errorMessage: undefined,
+
+
     itemsByRequestFromSearchForm: [],
     itemsFromCategory: [],
     categories: [],
@@ -16,6 +20,24 @@ const INITIAL_STATE = {
 
 const shopReducer = (state=INITIAL_STATE, action) => {
     switch (action.type) {
+        case ShopItemsActionTypes.FETCH_ITEMS_START:
+            return {
+                ...state,
+                isItemsFetching: true
+            };
+        case ShopItemsActionTypes.FETCH_ITEMS_SUCCESS:
+            return {
+                ...state,
+                isItemsFetching: false,
+                itemsList: action.payload
+            };
+        case ShopItemsActionTypes.FETCH_ITEMS_FAILURE:
+            return {
+                ...state,
+                isItemsFetching: false,
+                errorMessage: action.payload
+            };
+
         case ShopItemsActionTypes.DISPLAY_ALL_ITEMS:
             return {
                 ...state,

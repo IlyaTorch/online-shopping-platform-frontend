@@ -17,15 +17,17 @@ import {
 
     selectItemList,
     selectLimitedItems,
-    selectItemsFromCategory, selectDisplayingItemsByRequestFromSearchForm, selectItemsByRequestFromSearchForm
+    selectItemsFromCategory, selectDisplayingItemsByRequestFromSearchForm, selectItemsByRequestFromSearchForm,
+
+    selectIsItemsFetching, selectIsItemsLoading
 } from "../../redux/shop/shopSelectors";
 
 import {
     updateItemList,
-    updateItemsByRequestFromSearchForm
-} from "../../redux/shop/shopActions";
+    updateItemsByRequestFromSearchForm,
 
-import {setShopItemsToReduxState} from "../../utils/utils";
+    fetchItemsStartAsync
+} from "../../redux/shop/shopActions";
 
 
 const ShopHeaderWithSpinner = WithSpinner(ShopHeader);
@@ -41,7 +43,6 @@ class ShopPage extends React.Component {
         this.state = {
             shop: {},
             loadingShop: true,
-            loadingItems: true
         };
     }
 
@@ -52,7 +53,8 @@ class ShopPage extends React.Component {
                 this.setState({shop: shop});
                 this.setState({loadingShop: false});
             });
-        setShopItemsToReduxState(this.shopId, this);
+
+        this.props.fetchItemsStartAsync(this.shopId);
     }
 
     render() {
@@ -68,25 +70,24 @@ class ShopPage extends React.Component {
                 <div className="items-container">
                 {
                     this.props.displayAllItems ? <ItemsListWithSpinner
-                                                    isLoading={this.state.loadingItems}
+                                                    isLoading={!this.props.isItemsLoaded}
                                                     items={this.props.shopItems}
                                                   /> :
                         this.props.displayLimitedItems ? <ItemsListWithSpinner
-                                                            isLoading={this.state.loadingItems}
+                                                            isLoading={!this.props.isItemsLoaded}
                                                             items={this.props.limitedItems}
                                                           /> :
                             this.props.displayItemsByRequestFromSearchForm ? <ItemsListWithSpinner
-                                                                                    isLoading={this.state.loadingItems}
+                                                                                    isLoading={!this.props.isItemsLoaded}
                                                                                     items={this.props.itemsByRequestFromSearchForm}
                                                                                   /> :
                                 this.props.displayItemsFromCategory ? <ItemsListWithSpinner
-                                                                        isLoading={this.state.loadingItems}
+                                                                        isLoading={!this.props.isItemsLoaded}
                                                                         items={this.props.itemsFromCategory}
                                                                        /> :
                                     this.props.displayAbout ? <About infoAbout={this.state.shop.about}/> : null
                 }
                 </div>
-
             </div>
         )
     }
@@ -94,6 +95,10 @@ class ShopPage extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
     shopItems: selectItemList,
+    isItemsFetching: selectIsItemsFetching,
+    isItemsLoaded: selectIsItemsLoading,
+
+
     limitedItems: selectLimitedItems,
     itemsFromCategory: selectItemsFromCategory,
     itemsByRequestFromSearchForm: selectItemsByRequestFromSearchForm,
@@ -108,6 +113,8 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
     updateItemList: items => dispatch(updateItemList(items)),
     updateDisplayedItems: items => dispatch(updateItemsByRequestFromSearchForm(items)),
+
+    fetchItemsStartAsync: (shopId) => dispatch(fetchItemsStartAsync(shopId))
 });
 
 
