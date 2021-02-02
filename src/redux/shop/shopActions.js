@@ -1,5 +1,5 @@
 import {ShopItemsActionTypes} from "./shopTypes";
-import {API_SHOPS_URL} from "../../url-data/urlData";
+import {API_CATEGORIES_URL, API_SHOPS_URL} from "../../url-data/urlData";
 
 
 export const displayAllItems = () => (
@@ -114,5 +114,33 @@ export const fetchItemsStartAsync = (shopId) => {
             dispatch(updateItemsByRequestFromSearchForm(items));
         })
         .catch(error => dispatch(fetchItemsFailure(error.message)));
+    };
+};
+
+/////////FETCHING CATEGORIES////////
+export const fetchCategoriesStart = () => ({
+    type: ShopItemsActionTypes.FETCH_CATEGORIES_START,
+});
+
+export const fetchCategoriesSuccess = categories => ({
+    type: ShopItemsActionTypes.FETCH_CATEGORIES_SUCCESS,
+    payload: categories
+});
+
+export const fetchCategoriesFailure = errorMessage => ({
+    type: ShopItemsActionTypes.FETCH_CATEGORIES_FAILURE,
+    payload: errorMessage
+});
+
+export const fetchCategoriesStartAsync = () => {
+    return dispatch => {
+        dispatch(fetchCategoriesStart());
+
+        fetch(`${API_CATEGORIES_URL}/`)
+        .then(response => response.json())
+        .then(categories => {
+            dispatch(fetchCategoriesSuccess(categories));
+        })
+        .catch(error => dispatch(fetchCategoriesFailure(error.message)));
     };
 };

@@ -10,10 +10,12 @@ const INITIAL_STATE = {
     shopObj: null,
     isShopFetching: false,
 
+    categories: null,
+    isCategoriesFetching: false,
+
 
     itemsByRequestFromSearchForm: [],
     itemsFromCategory: [],
-    categories: [],
     displayAllItems: false,
     displayLimitedItems: false,
     displayItemsFromCategory: false,
@@ -58,6 +60,24 @@ const shopReducer = (state=INITIAL_STATE, action) => {
             return {
                 ...state,
                 isItemsFetching: false,
+                errorMessage: action.payload
+            };
+        /////FETCHING CATEGORIES//////
+        case ShopItemsActionTypes.FETCH_CATEGORIES_START:
+            return {
+                ...state,
+                isCategoriesFetching: true
+            };
+        case ShopItemsActionTypes.FETCH_CATEGORIES_SUCCESS:
+            return {
+                ...state,
+                isCategoriesFetching: false,
+                categories: action.payload
+            };
+        case ShopItemsActionTypes.FETCH_CATEGORIES_FAILURE:
+            return {
+                ...state,
+                isCategoriesFetching: false,
                 errorMessage: action.payload
             };
 
