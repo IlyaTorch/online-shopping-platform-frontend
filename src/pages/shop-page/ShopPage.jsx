@@ -86,7 +86,6 @@ const mapStateToProps = createStructuredSelector({
     isItemsLoaded: selectIsItemsLoading,
     shopItems: selectItemList,
 
-
     limitedItems: selectLimitedItems,
     itemsFromCategory: selectItemsFromCategory,
     itemsByRequestFromSearchForm: selectItemsByRequestFromSearchForm,

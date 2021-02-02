@@ -6,18 +6,22 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import './itempage.scss';
 
-import {API_URL, API_SHOPS_URL} from "../../url-data/urlData";
-
 import ShopHeader from "../../components/shop-header/ShopHeader";
 import ItemBody from "../../components/item-body/ItemBody";
 import SimilarItems from "../../components/similar-items/SimilarItems";
 import WithSpinner from "../../components/with-spinner/withSpinner";
 
-import {selectItemList} from "../../redux/shop/shopSelectors";
+import {
+    selectIsItemsLoading,
+    selectIsShopLoading,
+    selectItemList,
+    selectShopObj
+} from "../../redux/shop/shopSelectors";
 
-import {setShopItemsToReduxState} from "../../utils/utils";
-
-import {updateItemList, updateItemsByRequestFromSearchForm} from "../../redux/shop/shopActions";
+import {
+    fetchItemsStartAsync,
+    fetchShopStartAsync,
+} from "../../redux/shop/shopActions";
 
 
 const ShopHeaderWithSpinner = WithSpinner(ShopHeader);
@@ -29,62 +33,39 @@ class ItemPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            item: {},
-            shop: {},
-            loadingItem: true,
-            loadingShop: true
-        }
-
         this.shopId = this.props.match.params.shopId;
-        this.itemId = this.props.match.params.itemId;
+        this.itemId = parseInt(this.props.match.params.itemId);
     }
 
     componentDidMount () {
-        fetch(`${API_SHOPS_URL}/${this.shopId}`)
-            .then(response => response.json())
-            .then(shop => {
-                this.setState({shop: shop});
-                this.setState({loadingShop: false});
-            });
-
-        this.fetchItemToState(this.itemId);
-        setShopItemsToReduxState(this.shopId, this);
+        this.props.fetchShopStartAsync(this.shopId);
+        this.props.fetchItemsStartAsync(this.shopId);
     }
 
     componentWillReceiveProps (nextProps, nextContext) {
         if (this.props.location.pathname !== nextProps.location.pathname) {
             const {itemId: newItemId} = nextProps.match.params;
-
-            this.fetchItemToState(newItemId);
+            this.itemId = parseInt(newItemId);
         }
-    }
-
-    fetchItemToState = (itemId) => {
-        fetch(`${API_URL}/items/${itemId}`)
-            .then(response => response.json())
-            .then(item => {
-                this.setState({item: item});
-                this.setState({loadingItem: false});
-            });
     }
 
     render() {
         return (
             <div>
                 <ShopHeaderWithSpinner
-                    isLoading={this.state.loadingShop}
-                    shop={this.state.shop}
+                    isLoading={!this.props.isShopLoaded}
+                    shop={this.props.shop}
                     history={this.props.history}
                     match={this.props.match}
                 />
                 <ItemBodyWithSpinner
-                    isLoading={this.state.loadingItem}
-                    item={this.state.item}
+                    isLoading={!this.props.isItemsLoaded}
+                    item={this.props.isItemsLoaded && this.props.items.find (item => item.id === this.itemId)}
                 />
+
                 <SimilarItemsWithSpinner
-                    isLoading={this.state.loadingItem}
-                    mainItem={this.state.item}
+                    isLoading={!this.props.isItemsLoaded}
+                    mainItem={this.props.isItemsLoaded && this.props.items.find (item => item.id === this.itemId)}
                     shopItems={this.props.items}
                 />
             </div>
@@ -94,12 +75,15 @@ class ItemPage extends React.Component {
 
 
 const mapStateToProps = createStructuredSelector({
-    items: selectItemList
+    isShopLoaded: selectIsShopLoading,
+    shop: selectShopObj,
+    isItemsLoaded: selectIsItemsLoading,
+    items: selectItemList,
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateItemList: items => dispatch(updateItemList(items)),
-    updateDisplayedItems: items => dispatch(updateItemsByRequestFromSearchForm(items)),
+    fetchShopStartAsync: (shopId) => dispatch(fetchShopStartAsync(shopId)),
+    fetchItemsStartAsync: (shopId) => dispatch(fetchItemsStartAsync(shopId)),
 });
 
 

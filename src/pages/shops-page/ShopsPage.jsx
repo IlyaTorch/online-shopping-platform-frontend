@@ -7,7 +7,7 @@ import './shopsPage.scss';
 import WithSpinner from "../../components/with-spinner/withSpinner";
 import ShopsList from "../../components/shopsList/ShopsList";
 
-import {selectShops, selectIsShopsFetching, selectIsShopsLoading} from "../../redux/platform/platformSelectors";
+import {selectShops, selectIsShopsLoading} from "../../redux/platform/platformSelectors";
 
 import {fetchShopsStartAsync} from "../../redux/platform/platformActions";
 
@@ -30,7 +30,6 @@ class ShopsPage extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
     shops: selectShops,
-    isShopsFetching: selectIsShopsFetching,
     isShopsLoaded: selectIsShopsLoading
 });
 
