@@ -60,6 +60,34 @@ export const updateCategories = categories => (
     }
 );
 
+/////////FETCHING SHOP////////
+export const fetchShopStart = () => ({
+    type: ShopItemsActionTypes.FETCH_SHOP_START,
+});
+
+export const fetchShopSuccess = shop => ({
+    type: ShopItemsActionTypes.FETCH_SHOP_SUCCESS,
+    payload: shop
+});
+
+export const fetchShopFailure = errorMessage => ({
+    type: ShopItemsActionTypes.FETCH_SHOP_FAILURE,
+    payload: errorMessage
+});
+
+export const fetchShopStartAsync = (shopId) => {
+    return dispatch => {
+        dispatch(fetchShopStart());
+
+        fetch(`${API_SHOPS_URL}/${shopId}`)
+        .then(response => response.json())
+        .then(shop => {
+            dispatch(fetchShopSuccess(shop));
+        })
+        .catch(error => dispatch(fetchShopFailure(error.message)));
+    };
+};
+
 /////////FETCHING SHOP ITEMS////////
 export const fetchItemsStart = () => ({
     type: ShopItemsActionTypes.FETCH_ITEMS_START,

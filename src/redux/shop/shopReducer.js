@@ -2,9 +2,13 @@ import {ShopItemsActionTypes} from "./shopTypes";
 
 
 const INITIAL_STATE = {
+    errorMessage: undefined,
+
     itemsList: null,
     isItemsFetching: false,
-    errorMessage: undefined,
+
+    shopObj: null,
+    isShopFetching: false,
 
 
     itemsByRequestFromSearchForm: [],
@@ -20,6 +24,25 @@ const INITIAL_STATE = {
 
 const shopReducer = (state=INITIAL_STATE, action) => {
     switch (action.type) {
+        /////FETCHING SHOP//////
+        case ShopItemsActionTypes.FETCH_SHOP_START:
+            return {
+                ...state,
+                isShopFetching: true
+            };
+        case ShopItemsActionTypes.FETCH_SHOP_SUCCESS:
+            return {
+                ...state,
+                isShopFetching: false,
+                shopObj: action.payload
+            };
+        case ShopItemsActionTypes.FETCH_SHOP_FAILURE:
+            return {
+                ...state,
+                isShopFetching: false,
+                errorMessage: action.payload
+            };
+        /////FETCHING ITEMS//////
         case ShopItemsActionTypes.FETCH_ITEMS_START:
             return {
                 ...state,
@@ -37,6 +60,7 @@ const shopReducer = (state=INITIAL_STATE, action) => {
                 isItemsFetching: false,
                 errorMessage: action.payload
             };
+
 
         case ShopItemsActionTypes.DISPLAY_ALL_ITEMS:
             return {

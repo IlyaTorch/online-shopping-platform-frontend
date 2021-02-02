@@ -55,12 +55,18 @@ export const selectCategories = createSelector(
 );
 
 
-export const selectIsItemsFetching = createSelector(
-    [selectShop],
-    shop => shop.isItemsFetching
-);
-
 export const selectIsItemsLoading = createSelector(
     [selectShop],
     shop => !!shop.itemsList
+);
+
+
+export const selectShopObj = createSelector(
+    [selectShop],
+    shop => shop.shopObj
+);
+
+export const selectIsShopLoading = createSelector(
+    [selectShop],
+    shop => !!shop.shopObj
 );
