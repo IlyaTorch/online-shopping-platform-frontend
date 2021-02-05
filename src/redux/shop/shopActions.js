@@ -138,3 +138,7 @@ export const fetchCategoriesStartAsync = () => {
         .catch(error => dispatch(fetchCategoriesFailure(error.message)));
     };
 };
+
+export const setPaymentError = () => ({
+    type: ShopItemsActionTypes.SET_PAYMENT_ERROR
+});

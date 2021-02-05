@@ -13,6 +13,8 @@ const INITIAL_STATE = {
     categories: null,
     isCategoriesFetching: false,
 
+    paymentError: false,
+
 
     itemsByRequestFromSearchForm: [],
     itemsFromCategory: [],
@@ -81,6 +83,11 @@ const shopReducer = (state=INITIAL_STATE, action) => {
                 errorMessage: action.payload
             };
 
+        case ShopItemsActionTypes.SET_PAYMENT_ERROR:
+            return {
+                ...state,
+                paymentError: true
+            };
 
         case ShopItemsActionTypes.DISPLAY_ALL_ITEMS:
             return {

@@ -12,7 +12,9 @@ const CheckoutItem = ({cartItem, clearItem, addItem, removeItem, updateQuantity}
     const removeItemOnClick = () => removeItem(cartItem);
 
     const inputHandleChange = event => {
-        updateQuantity(cartItem, event.target.value);
+        if (event.target.value <= cartItem.total_quantity) {
+            updateQuantity (cartItem, event.target.value);
+        }
     }
 
     return (
@@ -28,7 +30,7 @@ const CheckoutItem = ({cartItem, clearItem, addItem, removeItem, updateQuantity}
             </span>
             <span className="quantity">
                 <div className="arrow" onClick={removeItemOnClick}>&#10094;</div>
-                <input type="number" value={cartItem.quantity} onChange={inputHandleChange}/>
+                <input type="number" value={cartItem.quantity} onChange={inputHandleChange} max={cartItem.total_quantity}/>
                 <div className="arrow" onClick={addItemOnClick}>&#10095;</div>
             </span>
             <span className="price">{cartItem.price}</span>

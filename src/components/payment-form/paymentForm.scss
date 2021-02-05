@@ -1,0 +1,31 @@
+.payment-form {
+  margin-top: 25px;
+  margin-bottom: 50px;
+  border: 1px solid darkgrey;
+
+  fieldset{
+    border: none;
+  }
+
+  legend {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  input {
+    font-size: 22px;
+  }
+  span {
+    margin-left: 15px;
+    font-size: 33px;
+  }
+
+  .mm, .yy {
+    width: 50px;
+  }
+
+  .cvc {
+    width: 60px;
+  }
+
+}

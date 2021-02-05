@@ -74,3 +74,8 @@ export const selectIsCategoriesLoading = createSelector(
     [selectShop],
     shop => !!shop.categories
 );
+
+export const selectPaymentErrorStatus = createSelector(
+    [selectShop],
+    shop => shop.paymentError
+);
