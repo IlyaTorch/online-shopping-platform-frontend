@@ -9,6 +9,7 @@ import "./checkoutPage.scss";
 
 import CheckoutItem from "../../components/checkout-item/CheckoutItem";
 import CustomButton from "../../components/custom-button/CustomButton";
+import {Link} from "react-router-dom";
 
 
 const CheckoutPage = ({cartItems, total}) => (
@@ -39,7 +40,9 @@ const CheckoutPage = ({cartItems, total}) => (
             <span>TOTAL: ${total}</span>
         </div>
 
-        <CustomButton>BUY</CustomButton>
+        <Link to='/order-form'>
+            <CustomButton>Checkout</CustomButton>
+        </Link>
     </div>
 );
 

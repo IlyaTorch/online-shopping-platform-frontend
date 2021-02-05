@@ -12,6 +12,7 @@ import ShopPage from "./pages/shop-page/ShopPage";
 import ItemPage from "./pages/item-page/ItemPage";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import SuccessPaymentPage from "./pages/success-payment-page/SuccessPaymentPage";
+import OrderPage from "./pages/order/OrderPage";
 import Footer from "./components/footer/Footer";
 
 
@@ -26,6 +27,7 @@ const App = () => (
                 <Switch>
                     <Route exact path='/' component={HomePage} />
                     <Route exact path='/checkout' component={CheckoutPage} />
+                    <Route exact path='/order-form' component={OrderPage} />
                     <Route exact path='/success-payment' component={SuccessPaymentPage} />
                     <Route exact path='/shops' component={ShopsPage} />
                     <Route exact path='/shops/:shopId' component={ShopPage} />
