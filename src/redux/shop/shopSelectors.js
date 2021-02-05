@@ -41,7 +41,7 @@ export const selectItemsByRequestFromSearchForm = createSelector(
 
 export const selectLimitedItems = createSelector(
     [selectShop],
-    shop => shop.itemsList.filter(item => item.limit_offer_period != null)
+    shop => shop.itemsList ? shop.itemsList.filter(item => item.limit_offer_period != null) : null
 );
 
 export const selectItemsFromCategory = createSelector(
@@ -49,8 +49,28 @@ export const selectItemsFromCategory = createSelector(
     shop => shop.itemsFromCategory
 );
 
+export const selectIsItemsLoading = createSelector(
+    [selectShop],
+    shop => !!shop.itemsList
+);
+
+
+export const selectShopObj = createSelector(
+    [selectShop],
+    shop => shop.shopObj
+);
+
+export const selectIsShopLoading = createSelector(
+    [selectShop],
+    shop => !!shop.shopObj
+);
+
 export const selectCategories = createSelector(
     [selectShop],
     shop => shop.categories
 );
 
+export const selectIsCategoriesLoading = createSelector(
+    [selectShop],
+    shop => !!shop.categories
+);

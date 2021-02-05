@@ -2,8 +2,6 @@ import React from 'react';
 import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
 
-import {API_SHOPS_URL} from "../../url-data/urlData";
-
 import './shopPage.scss';
 
 import About from "../../components/about/About";
@@ -17,15 +15,17 @@ import {
 
     selectItemList,
     selectLimitedItems,
-    selectItemsFromCategory, selectDisplayingItemsByRequestFromSearchForm, selectItemsByRequestFromSearchForm
+    selectItemsFromCategory, selectDisplayingItemsByRequestFromSearchForm, selectItemsByRequestFromSearchForm,
+
+    selectIsItemsLoading,
+    selectShopObj,
+    selectIsShopLoading,
 } from "../../redux/shop/shopSelectors";
 
 import {
-    updateItemList,
-    updateItemsByRequestFromSearchForm
+    fetchShopStartAsync,
+    fetchItemsStartAsync
 } from "../../redux/shop/shopActions";
-
-import {setShopItemsToReduxState} from "../../utils/utils";
 
 
 const ShopHeaderWithSpinner = WithSpinner(ShopHeader);
@@ -37,30 +37,19 @@ class ShopPage extends React.Component {
         super(props);
 
         this.shopId = this.props.match.params.shopId;
-
-        this.state = {
-            shop: {},
-            loadingShop: true,
-            loadingItems: true
-        };
     }
 
     componentDidMount () {
-        fetch(`${API_SHOPS_URL}/${this.shopId}`)
-            .then(response => response.json())
-            .then(shop => {
-                this.setState({shop: shop});
-                this.setState({loadingShop: false});
-            });
-        setShopItemsToReduxState(this.shopId, this);
+        this.props.fetchShopStartAsync(this.shopId);
+        this.props.fetchItemsStartAsync(this.shopId);
     }
 
     render() {
         return (
             <div className="shop-page-container">
                 <ShopHeaderWithSpinner
-                    isLoading={this.state.loadingShop}
-                    shop={this.state.shop}
+                    isLoading={!this.props.isShopLoaded}
+                    shop={this.props.shop}
                     history={this.props.history}
                     match={this.props.match}
                 />
@@ -68,32 +57,35 @@ class ShopPage extends React.Component {
                 <div className="items-container">
                 {
                     this.props.displayAllItems ? <ItemsListWithSpinner
-                                                    isLoading={this.state.loadingItems}
+                                                    isLoading={!this.props.isItemsLoaded}
                                                     items={this.props.shopItems}
                                                   /> :
                         this.props.displayLimitedItems ? <ItemsListWithSpinner
-                                                            isLoading={this.state.loadingItems}
+                                                            isLoading={!this.props.isItemsLoaded}
                                                             items={this.props.limitedItems}
                                                           /> :
                             this.props.displayItemsByRequestFromSearchForm ? <ItemsListWithSpinner
-                                                                                    isLoading={this.state.loadingItems}
+                                                                                    isLoading={!this.props.isItemsLoaded}
                                                                                     items={this.props.itemsByRequestFromSearchForm}
                                                                                   /> :
                                 this.props.displayItemsFromCategory ? <ItemsListWithSpinner
-                                                                        isLoading={this.state.loadingItems}
+                                                                        isLoading={!this.props.isItemsLoaded}
                                                                         items={this.props.itemsFromCategory}
                                                                        /> :
-                                    this.props.displayAbout ? <About infoAbout={this.state.shop.about}/> : null
+                                    this.props.displayAbout ? <About infoAbout={this.props.shop.about}/> : null
                 }
                 </div>
-
             </div>
         )
     }
 }
 
 const mapStateToProps = createStructuredSelector({
+    isShopLoaded: selectIsShopLoading,
+    shop: selectShopObj,
+    isItemsLoaded: selectIsItemsLoading,
     shopItems: selectItemList,
+
     limitedItems: selectLimitedItems,
     itemsFromCategory: selectItemsFromCategory,
     itemsByRequestFromSearchForm: selectItemsByRequestFromSearchForm,
@@ -106,8 +98,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateItemList: items => dispatch(updateItemList(items)),
-    updateDisplayedItems: items => dispatch(updateItemsByRequestFromSearchForm(items)),
+    fetchItemsStartAsync: (shopId) => dispatch(fetchItemsStartAsync(shopId)),
+    fetchShopStartAsync: (shopId) => dispatch(fetchShopStartAsync(shopId))
 });
 
 

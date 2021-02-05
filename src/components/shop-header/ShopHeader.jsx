@@ -4,17 +4,15 @@ import {createStructuredSelector} from "reselect";
 
 import './shopHeader.scss';
 
-import {API_CATEGORIES_URL} from "../../url-data/urlData";
-
 import CustomButton from "../custom-button/CustomButton";
 import CategoriesDropdown from "../categories-dropdown/CategoriesDropdown";
 import SearchForm from "../search-form/SearchForm";
 import WithSpinner from "../with-spinner/withSpinner";
 
-import {selectCategories} from "../../redux/shop/shopSelectors";
+import {selectCategories, selectIsCategoriesLoading} from "../../redux/shop/shopSelectors";
 
 import {
-    updateCategories,
+    fetchCategoriesStartAsync,
     displayAllItems,
     displayAboutComponent,
     displayLimitedItems
@@ -30,17 +28,11 @@ class ShopHeader extends React.Component {
         this.state = {
             displayAboutComponent: false,
             displayCategoriesDropdown: false,
-            loading: true
         };
     }
 
     componentDidMount () {
-        fetch(`${API_CATEGORIES_URL}/`)
-            .then(response => response.json())
-            .then(categories => {
-                this.props.updateCategories(categories);
-                this.setState({loading: false});
-            });
+        this.props.fetchCategoriesStartAsync();
     }
 
     isCurrentPageItemPage = () => {
@@ -92,7 +84,7 @@ class ShopHeader extends React.Component {
                     {
                         this.state.displayCategoriesDropdown &&
                             <CategoriesDropdownWithSpinner
-                                isLoading={this.state.loading}
+                                isLoading={!this.props.categoriesLoaded}
                                 categories={this.props.categories}
                                 history={this.props.history}
                                 isCurrentPageItemPage={this.isCurrentPageItemPage}
@@ -122,11 +114,12 @@ class ShopHeader extends React.Component {
 
 
 const mapStateToProps = createStructuredSelector({
+    categoriesLoaded: selectIsCategoriesLoading,
     categories: selectCategories
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateCategories: categories => dispatch(updateCategories(categories)),
+    fetchCategoriesStartAsync: () => dispatch(fetchCategoriesStartAsync()),
     displayAllItems: () => dispatch(displayAllItems()),
     displayAboutComponent: () => dispatch(displayAboutComponent()),
     displayLimitedItems: () => dispatch(displayLimitedItems())

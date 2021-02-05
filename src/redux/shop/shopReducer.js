@@ -2,10 +2,20 @@ import {ShopItemsActionTypes} from "./shopTypes";
 
 
 const INITIAL_STATE = {
-    itemsList: [],
+    errorMessage: undefined,
+
+    itemsList: null,
+    isItemsFetching: false,
+
+    shopObj: null,
+    isShopFetching: false,
+
+    categories: null,
+    isCategoriesFetching: false,
+
+
     itemsByRequestFromSearchForm: [],
     itemsFromCategory: [],
-    categories: [],
     displayAllItems: false,
     displayLimitedItems: false,
     displayItemsFromCategory: false,
@@ -16,6 +26,62 @@ const INITIAL_STATE = {
 
 const shopReducer = (state=INITIAL_STATE, action) => {
     switch (action.type) {
+        /////FETCHING SHOP//////
+        case ShopItemsActionTypes.FETCH_SHOP_START:
+            return {
+                ...state,
+                isShopFetching: true
+            };
+        case ShopItemsActionTypes.FETCH_SHOP_SUCCESS:
+            return {
+                ...state,
+                isShopFetching: false,
+                shopObj: action.payload
+            };
+        case ShopItemsActionTypes.FETCH_SHOP_FAILURE:
+            return {
+                ...state,
+                isShopFetching: false,
+                errorMessage: action.payload
+            };
+        /////FETCHING ITEMS//////
+        case ShopItemsActionTypes.FETCH_ITEMS_START:
+            return {
+                ...state,
+                isItemsFetching: true
+            };
+        case ShopItemsActionTypes.FETCH_ITEMS_SUCCESS:
+            return {
+                ...state,
+                isItemsFetching: false,
+                itemsList: action.payload
+            };
+        case ShopItemsActionTypes.FETCH_ITEMS_FAILURE:
+            return {
+                ...state,
+                isItemsFetching: false,
+                errorMessage: action.payload
+            };
+        /////FETCHING CATEGORIES//////
+        case ShopItemsActionTypes.FETCH_CATEGORIES_START:
+            return {
+                ...state,
+                isCategoriesFetching: true
+            };
+        case ShopItemsActionTypes.FETCH_CATEGORIES_SUCCESS:
+            return {
+                ...state,
+                isCategoriesFetching: false,
+                categories: action.payload
+            };
+        case ShopItemsActionTypes.FETCH_CATEGORIES_FAILURE:
+            return {
+                ...state,
+                isCategoriesFetching: false,
+                errorMessage: action.payload
+            };
+
+
         case ShopItemsActionTypes.DISPLAY_ALL_ITEMS:
             return {
                 ...state,

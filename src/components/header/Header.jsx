@@ -1,12 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from "react-redux";
+import {createStructuredSelector} from "reselect";
 
 import './header.scss';
 
 import {ReactComponent as Logo} from '../../assets/crown.svg'
-
 import CartIcon from "../cart-icon/CartIcon";
 import SearchForm from "../search-form/SearchForm";
+import CartDropdown from "../cart/cart-dropdown/CartDropdown";
+
+import {selectCartHidden} from "../../redux/cart/cartSelectors";
 
 
 const Header = (props) => (
@@ -17,7 +21,7 @@ const Header = (props) => (
 
         <div className="options">
             {
-                !props.location.pathname.includes('/shops/')
+                !props.location.pathname.includes('/platform/')
                 ?
                     <span style={
                         {
@@ -26,7 +30,7 @@ const Header = (props) => (
                             alignItems: 'center'
                         }
                     }>
-                    <SearchForm />
+                    {props.location.pathname === '/' && <SearchForm />}
                     <Link className="option" to="/shops">SHOPS</Link>
                     </span>
                 : null
@@ -38,9 +42,15 @@ const Header = (props) => (
 
             <CartIcon />
         </div>
+        {
+            props.hidden ? null : <CartDropdown />
+        }
 
     </div>
 );
 
+const mapStateToProps = createStructuredSelector({
+    hidden: selectCartHidden
+});
 
-export default Header;
+export default connect(mapStateToProps)(Header);
