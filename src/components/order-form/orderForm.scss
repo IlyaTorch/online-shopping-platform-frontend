@@ -1,31 +1,10 @@
-.payment-form {
-  margin-top: 25px;
-  margin-bottom: 50px;
-  border: 1px solid darkgrey;
+.order-form {
+  width: 50%;
+  margin: auto;
+  font-size: 25px;
+  font-weight: bold;
 
-  fieldset{
-    border: none;
+  button {
+    margin: auto;
   }
-
-  legend {
-    font-size: 28px;
-    font-weight: bold;
-  }
-
-  input {
-    font-size: 22px;
-  }
-  span {
-    margin-left: 15px;
-    font-size: 33px;
-  }
-
-  .mm, .yy {
-    width: 50px;
-  }
-
-  .cvc {
-    width: 60px;
-  }
-
 }

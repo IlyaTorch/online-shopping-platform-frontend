@@ -40,9 +40,11 @@ const CheckoutPage = ({cartItems, total}) => (
             <span>TOTAL: ${total}</span>
         </div>
 
-        <Link to='/order-form'>
-            <CustomButton>Checkout</CustomButton>
-        </Link>
+        {total > 0 &&
+            <Link to='/order-form'>
+                <CustomButton>Checkout</CustomButton>
+            </Link>
+        }
     </div>
 );
 
