@@ -6,8 +6,11 @@ import './orderForm.scss';
 
 import CustomButton from "../custom-button/CustomButton";
 
+import {setPaymentError} from "../../redux/shop/shopActions";
+import {connect} from "react-redux";
 
-const OrderForm = ({items, totalSum}) => {
+
+const OrderForm = ({items, totalSum, setPaymentError}) => {
     const initialFormData = Object.freeze({
         email: "",
         address: "",
@@ -61,7 +64,8 @@ const OrderForm = ({items, totalSum}) => {
                 body: JSON.stringify(order)
             }).then(response => response.status === 201
                 ? window.location.href='success-payment'
-                : console.error(response));
+                : setPaymentError()
+            );
         }
 
         setValidated(true);
@@ -147,4 +151,8 @@ const OrderForm = ({items, totalSum}) => {
 };
 
 
-export default OrderForm;
+const mapDispatchToProps = dispatch => ({
+    setPaymentError: () => dispatch(setPaymentError())
+});
+
+export default connect(null, mapDispatchToProps)(OrderForm);

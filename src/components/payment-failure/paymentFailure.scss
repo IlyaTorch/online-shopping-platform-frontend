@@ -1,9 +1,11 @@
 .payment-failure {
+  width: 50%;
+  text-align: center;
   color: #9f3a38;
   border: 1px solid red;
   border-radius: 5px;
   padding: 30px;
-  margin-bottom: 40px;
+  margin: 0 auto 50px;
 
   h1 {
     font-size: 40px;
