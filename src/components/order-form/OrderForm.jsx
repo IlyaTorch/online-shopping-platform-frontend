@@ -1,13 +1,14 @@
 import React from 'react';
-import {PAYMENT_URL} from "../../url-data/urlData";
+import {connect} from "react-redux";
 import {Col, Form} from "react-bootstrap";
 
 import './orderForm.scss';
 
+import {PAYMENT_URL} from "../../url-data/urlData";
+
 import CustomButton from "../custom-button/CustomButton";
 
 import {setPaymentError} from "../../redux/shop/shopActions";
-import {connect} from "react-redux";
 
 
 const OrderForm = ({items, totalSum, setPaymentError}) => {
@@ -16,9 +17,11 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
         address: "",
         name: "",
 
-        cc_number: "",
-        cc_expiry: "",
-        cc_code: "",
+        ccNumber: "",
+        ccExpiry: "",
+        ccCode: "",
+
+        saveUserData: false
     });
 
     const [formData, updateFormData] = React.useState(initialFormData);
@@ -26,7 +29,6 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
     const handleChange = (event) => {
         updateFormData({
             ...formData,
-
             [event.target.name]: event.target.value.trim()
         });
     };
@@ -49,11 +51,12 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                     address: formData.address
                 },
                 card: {
-                    cc_number: formData.cc_number,
-                    cc_code: formData.cc_code,
-                    cc_expiry: formData.cc_expiry
+                    ccNumber: formData.ccNumber,
+                    ccCode: formData.ccCode,
+                    ccExpiry: formData.ccExpiry
                 },
-                total_sum: totalSum
+                totalSum: totalSum,
+                saveUserData: formData.saveUserData
             };
 
             fetch(PAYMENT_URL, {
@@ -116,7 +119,7 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                                 placeholder="Card Number"
                                 aria-describedby="inputGroupPrepend"
                                 required
-                                name="cc_number"
+                                name="ccNumber"
                                 onChange={handleChange}
                             />
                         </Col>
@@ -126,7 +129,7 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                                 placeholder="Expiration Date"
                                 aria-describedby="inputGroupPrepend"
                                 required
-                                name="cc_expiry"
+                                name="ccExpiry"
                                 onChange={handleChange}
                             />
                         </Col>
@@ -136,12 +139,21 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                                 placeholder="Security Code"
                                 aria-describedby="inputGroupPrepend"
                                 required
-                                name="cc_code"
+                                name="ccCode"
                                 onChange={handleChange}
                                 width="50"
                             />
                         </Col>
                     </Form.Row>
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Check.Input
+                        type="checkbox"
+                        name="saveUserData"
+                        onChange={handleChange}
+                    />
+                    <Form.Check.Label>Save data for future orders</Form.Check.Label>
                 </Form.Group>
 
                 <CustomButton type="submit">Make Order</CustomButton>
