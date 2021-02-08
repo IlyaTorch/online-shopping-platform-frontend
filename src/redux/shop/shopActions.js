@@ -139,6 +139,7 @@ export const fetchCategoriesStartAsync = () => {
     };
 };
 
-export const setPaymentError = () => ({
-    type: ShopItemsActionTypes.SET_PAYMENT_ERROR
+export const setPaymentError = errorMessage => ({
+    type: ShopItemsActionTypes.SET_PAYMENT_ERROR,
+    payload: errorMessage
 });

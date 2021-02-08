@@ -10,9 +10,9 @@ import HomePage from "./pages/homepage/HomePage";
 import ShopsPage from "./pages/shops-page/ShopsPage";
 import ShopPage from "./pages/shop-page/ShopPage";
 import ItemPage from "./pages/item-page/ItemPage";
-import CheckoutPage from "./pages/checkout/CheckoutPage";
+import CheckoutPage from "./pages/checkout-page/CheckoutPage";
 import SuccessPaymentPage from "./pages/success-payment-page/SuccessPaymentPage";
-import OrderPage from "./pages/order/OrderPage";
+import OrderPage from "./pages/order-page/OrderPage";
 import Footer from "./components/footer/Footer";
 
 

@@ -6,12 +6,12 @@ import OrderForm from "../../components/order-form/OrderForm";
 import PaymentFailure from "../../components/payment-failure/PaymentFailure";
 
 import {selectCartItems, selectCartTotal} from "../../redux/cart/cartSelectors";
-import {selectPaymentErrorStatus} from "../../redux/shop/shopSelectors";
+import {selectPaymentErrorMessage, selectPaymentErrorStatus} from "../../redux/shop/shopSelectors";
 
 
-const OrderPage = ({cartItems, total, paymentError}) => (
+const OrderPage = ({cartItems, total, paymentError, errorMessage}) => (
     <div>
-        {paymentError && <PaymentFailure />}
+        {paymentError && <PaymentFailure errorMessage={errorMessage}/>}
         <OrderForm items={cartItems} totalSum={total}/>
     </div>
 );
@@ -19,7 +19,8 @@ const OrderPage = ({cartItems, total, paymentError}) => (
 const mapStateToProps = createStructuredSelector({
     cartItems: selectCartItems,
     total: selectCartTotal,
-    paymentError: selectPaymentErrorStatus
+    paymentError: selectPaymentErrorStatus,
+    errorMessage: selectPaymentErrorMessage
 });
 
 

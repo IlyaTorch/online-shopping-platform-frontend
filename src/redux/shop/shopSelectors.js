@@ -79,3 +79,8 @@ export const selectPaymentErrorStatus = createSelector(
     [selectShop],
     shop => shop.paymentError
 );
+
+export const selectPaymentErrorMessage = createSelector(
+    [selectShop],
+    shop => shop.errorMessage
+);

@@ -14,7 +14,11 @@ import {setPaymentError} from "../../redux/shop/shopActions";
 const OrderForm = ({items, totalSum, setPaymentError}) => {
     const initialFormData = Object.freeze({
         email: "",
-        address: "",
+        city: "",
+        province: "",
+        streetAddress: "",
+        postalCode: "",
+
         name: "",
 
         ccNumber: "",
@@ -35,6 +39,28 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
 
     const [validated, setValidated] = React.useState(false);
 
+    const pushOrder = order => fetch(PAYMENT_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(order)
+        })
+        .then(response => response.status === 201
+            ? window.location.href='success-payment'
+            : response.json())
+        .then(({error}) => setPaymentError(error));
+
+    const isCardNumberCorrect = cardNumber => cardNumber.length === 16;
+    const isCardExpiryCorrect = expiry => Date.parse(expiry) > Date.now();
+    const isSecurityCodeCorrect = code => code.length === 3;
+
+    const validateCardData = ({ccNumber, ccExpiry, ccCode}) => {
+        return isCardNumberCorrect(ccNumber) &&
+               isCardExpiryCorrect(ccExpiry) &&
+               isSecurityCodeCorrect(ccCode);
+    };
+
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -48,27 +74,25 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                 customer: {
                     email: formData.email,
                     name: formData.name,
-                    address: formData.address
+                    city: formData.city,
+                    province: formData.province,
+                    postalCode: formData.postalCode,
+                    streetAddress: formData.streetAddress
                 },
                 card: {
                     ccNumber: formData.ccNumber,
-                    ccCode: formData.ccCode,
-                    ccExpiry: formData.ccExpiry
+                    ccExpiry: formData.ccExpiry,
+                    ccCode: formData.ccCode
                 },
                 totalSum: totalSum,
                 saveUserData: formData.saveUserData
             };
-
-            fetch(PAYMENT_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify(order)
-            }).then(response => response.status === 201
-                ? window.location.href='success-payment'
-                : setPaymentError()
-            );
+            if (validateCardData(order.card)) {
+                pushOrder(order);
+            }
+            else {
+                setPaymentError("Incorrect card data!");
+            }
         }
 
         setValidated(true);
@@ -76,8 +100,8 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
 
     return (
         <div className="order-form">
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group md="4" controlId="validationCustom01">
+            <Form validated={validated} onSubmit={handleSubmit}>
+                <Form.Group>
                     <Form.Label>Contact Info</Form.Label>
                     <Form.Control
                         required
@@ -88,7 +112,7 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                     />
                 </Form.Group>
 
-                <Form.Group md="4" controlId="validationCustom02">
+                <Form.Group>
                     <Form.Label>Shipping info</Form.Label>
                     <Form.Control
                         required
@@ -99,25 +123,59 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                     />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustomUsername">
+                <Form.Group>
                     <Form.Control
                         type="text"
-                        placeholder="Address"
-                        aria-describedby="inputGroupPrepend"
+                        placeholder="Street address"
                         required
-                        name="address"
+                        name="streetAddress"
                         onChange={handleChange}
                     />
                 </Form.Group>
+                <Form.Group>
+                    <Form.Row>
+                        <Col>
+                            <Form.Control
+                                type="text"
+                                placeholder="City"
+                                required
+                                name="city"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                        <Col>
+                            <Form.Control
+                                type="text"
+                                placeholder="Province"
+                                required
+                                name="province"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Row>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Row>
+                        <Col>
+                            <Form.Control
+                                type="text"
+                                placeholder="Postal code"
+                                required
+                                name="postalCode"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                        <Col></Col>
+                    </Form.Row>
+                </Form.Group>
 
-                <Form.Group  md="8" controlId="validationCustomUsername">
+                <Form.Group>
                     <Form.Label>Payment info</Form.Label>
                     <Form.Row>
                         <Col>
                             <Form.Control
                                 type="text"
                                 placeholder="Card Number"
-                                aria-describedby="inputGroupPrepend"
                                 required
                                 name="ccNumber"
                                 onChange={handleChange}
@@ -127,7 +185,6 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                             <Form.Control
                                 type="date"
                                 placeholder="Expiration Date"
-                                aria-describedby="inputGroupPrepend"
                                 required
                                 name="ccExpiry"
                                 onChange={handleChange}
@@ -137,11 +194,9 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                             <Form.Control
                                 type="text"
                                 placeholder="Security Code"
-                                aria-describedby="inputGroupPrepend"
                                 required
                                 name="ccCode"
                                 onChange={handleChange}
-                                width="50"
                             />
                         </Col>
                     </Form.Row>
@@ -153,10 +208,10 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                         name="saveUserData"
                         onChange={handleChange}
                     />
-                    <Form.Check.Label>Save data for future orders</Form.Check.Label>
+                    <Form.Check.Label>User will be registered</Form.Check.Label>
                 </Form.Group>
 
-                <CustomButton type="submit">Make Order</CustomButton>
+                <CustomButton type="submit">Submit</CustomButton>
             </Form>
         </div>
   );
@@ -164,7 +219,7 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
 
 
 const mapDispatchToProps = dispatch => ({
-    setPaymentError: () => dispatch(setPaymentError())
+    setPaymentError: errorMessage => dispatch(setPaymentError(errorMessage))
 });
 
 export default connect(null, mapDispatchToProps)(OrderForm);

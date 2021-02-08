@@ -86,7 +86,8 @@ const shopReducer = (state=INITIAL_STATE, action) => {
         case ShopItemsActionTypes.SET_PAYMENT_ERROR:
             return {
                 ...state,
-                paymentError: true
+                paymentError: true,
+                errorMessage: action.payload
             };
 
         case ShopItemsActionTypes.DISPLAY_ALL_ITEMS:
