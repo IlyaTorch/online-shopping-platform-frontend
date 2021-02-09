@@ -19,7 +19,7 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
         streetAddress: "",
         postalCode: "",
 
-        name: "",
+        fullName: "",
 
         ccNumber: "",
         ccExpiry: "",
@@ -73,7 +73,7 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                 items: items,
                 customer: {
                     email: formData.email,
-                    name: formData.name,
+                    fullName: formData.fullName,
                     city: formData.city,
                     province: formData.province,
                     postalCode: formData.postalCode,
@@ -118,7 +118,7 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                         required
                         type="text"
                         placeholder="Full Name"
-                        name="name"
+                        name="fullName"
                         onChange={handleChange}
                     />
                 </Form.Group>
