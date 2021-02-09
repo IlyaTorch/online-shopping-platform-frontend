@@ -8,10 +8,10 @@ import {PAYMENT_URL} from "../../url-data/urlData";
 
 import CustomButton from "../custom-button/CustomButton";
 
-import {setPaymentError} from "../../redux/shop/shopActions";
+import {showOrderError} from "../../redux/shop/shopActions";
 
 
-const OrderForm = ({items, totalSum, setPaymentError}) => {
+const OrderForm = ({items, totalSum, showOrderError}) => {
     const initialFormData = Object.freeze({
         email: "",
         city: "",
@@ -49,7 +49,7 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
         .then(response => response.status === 201
             ? window.location.href='success-payment'
             : response.json())
-        .then(({error}) => setPaymentError(error));
+        .then(({error}) => showOrderError(error));
 
     const isCardNumberCorrect = cardNumber => cardNumber.length === 16;
     const isCardExpiryCorrect = expiry => Date.parse(expiry) > Date.now();
@@ -91,7 +91,7 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
                 pushOrder(order);
             }
             else {
-                setPaymentError("Incorrect card data!");
+                showOrderError("Incorrect card data!");
             }
         }
 
@@ -219,7 +219,7 @@ const OrderForm = ({items, totalSum, setPaymentError}) => {
 
 
 const mapDispatchToProps = dispatch => ({
-    setPaymentError: errorMessage => dispatch(setPaymentError(errorMessage))
+    showOrderError: errorMessage => dispatch(showOrderError(errorMessage))
 });
 
 export default connect(null, mapDispatchToProps)(OrderForm);

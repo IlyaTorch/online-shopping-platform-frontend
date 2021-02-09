@@ -82,12 +82,18 @@ const shopReducer = (state=INITIAL_STATE, action) => {
                 isCategoriesFetching: false,
                 errorMessage: action.payload
             };
-
-        case ShopItemsActionTypes.SET_PAYMENT_ERROR:
+        // SHOW/HIDE order error alert
+        case ShopItemsActionTypes.SHOW_ORDER_ERROR:
             return {
                 ...state,
                 paymentError: true,
                 errorMessage: action.payload
+            };
+        case ShopItemsActionTypes.HIDE_ORDER_ERROR:
+            return {
+                ...state,
+                paymentError: false,
+                errorMessage: undefined
             };
 
         case ShopItemsActionTypes.DISPLAY_ALL_ITEMS:

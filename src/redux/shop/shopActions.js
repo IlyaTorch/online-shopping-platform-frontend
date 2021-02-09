@@ -139,7 +139,19 @@ export const fetchCategoriesStartAsync = () => {
     };
 };
 
-export const setPaymentError = errorMessage => ({
-    type: ShopItemsActionTypes.SET_PAYMENT_ERROR,
-    payload: errorMessage
+export const showOrderError = errorMessage => {
+    return dispatch => {
+        dispatch({
+            type: ShopItemsActionTypes.SHOW_ORDER_ERROR,
+            payload: errorMessage
+        });
+
+        setTimeout(() => {
+            dispatch(hideOrderError());
+        }, 3000);
+    }
+};
+
+export const hideOrderError = () => ({
+    type: ShopItemsActionTypes.HIDE_ORDER_ERROR
 });
