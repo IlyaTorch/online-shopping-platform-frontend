@@ -35,11 +35,11 @@ class ShopHeader extends React.Component {
         this.props.fetchCategoriesStartAsync();
     }
 
-    isCurrentPageItemPage() {
+    isCurrentPageItemPage = () => {
         return 'itemId' in this.props.match.params;
     }
 
-    returnToTheShopPage() {
+    returnToTheShopPage = () => {
         const shopPageLocation = `/shops/${this.props.shop.id}`;
         this.props.history.push(shopPageLocation);
     }

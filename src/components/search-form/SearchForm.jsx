@@ -16,7 +16,7 @@ import FormInput from '../form-input/FormInput';
 
 
 class SearchForm extends React.Component {
-    handleChange(event) {
+    handleChange = (event) => {
         const {value} = event.target;
         this.props.updateItemsByRequestFromSearchForm(
             this.props.items.filter((item) => item.title.toLowerCase().includes(value)),

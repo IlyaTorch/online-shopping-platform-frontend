@@ -19,16 +19,16 @@ class ItemBody extends React.Component {
         };
     }
 
-    handleSubmit(event) {
+    handleSubmit = (event) => {
         event.preventDefault();
 
         this.props.addItem({...this.props.item, size: this.state.size, color: this.state.color});
     }
 
-    changeSize(event) {
+    changeSize = (event) => {
         this.setState({size: event.target.value});
     }
-    changeColor(event) {
+    changeColor = (event) => {
         this.setState({color: event.target.value});
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Redirect} from 'react-router';
 import {createStructuredSelector} from 'reselect';
 import {connect} from 'react-redux';
 
@@ -11,6 +12,7 @@ import {selectPaymentErrorMessage, selectPaymentErrorStatus} from '../../redux/s
 
 const OrderPage = ({cartItems, total, paymentError, errorMessage}) => (
     <div>
+        {!cartItems.length && <Redirect to="/" />}
         {paymentError && <PaymentFailure errorMessage={errorMessage}/>}
         <OrderForm items={cartItems} totalSum={total}/>
     </div>

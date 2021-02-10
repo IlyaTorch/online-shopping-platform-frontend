@@ -15,7 +15,7 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
     const initialFormData = Object.freeze({
         email: '',
         city: '',
-        province: '',
+        region: '',
         streetAddress: '',
         postalCode: '',
 
@@ -51,23 +51,13 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
             response.json())
         .then(({error}) => showOrderError(error));
 
-    const isCardNumberCorrect = (cardNumber) => cardNumber.length === 16;
-    const isCardExpiryCorrect = (expiry) => Date.parse(expiry) > Date.now();
-    const isSecurityCodeCorrect = (code) => code.length === 3;
-
-    const validateCardData = ({ccNumber, ccExpiry, ccCode}) => {
-        return isCardNumberCorrect(ccNumber) &&
-               isCardExpiryCorrect(ccExpiry) &&
-               isSecurityCodeCorrect(ccCode);
-    };
-
     const handleSubmit = (event) => {
         const form = event.currentTarget;
 
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
-        } else if (items.length) {
+        } else {
             event.preventDefault();
 
             const order = {
@@ -76,7 +66,7 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                     email: formData.email,
                     fullName: formData.fullName,
                     city: formData.city,
-                    province: formData.province,
+                    region: formData.region,
                     postalCode: formData.postalCode,
                     streetAddress: formData.streetAddress,
                 },
@@ -88,14 +78,7 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                 totalSum: totalSum,
                 saveUserData: formData.saveUserData,
             };
-            if (validateCardData(order.card)) {
-                pushOrder(order);
-            } else {
-                showOrderError('Incorrect card data!');
-            }
-        } else {
-            event.preventDefault();
-            showOrderError('No items selected!');
+            pushOrder(order);
         }
 
         setValidated(true);
@@ -149,9 +132,9 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                         <Col>
                             <Form.Control
                                 type="text"
-                                placeholder="Province"
+                                placeholder="Region"
                                 required
-                                name="province"
+                                name="region"
                                 onChange={handleChange}
                             />
                         </Col>
@@ -182,6 +165,8 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                                 required
                                 name="ccNumber"
                                 onChange={handleChange}
+                                minLength="16"
+                                maxLength="16"
                             />
                         </Col>
                         <Col>
@@ -191,6 +176,7 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                                 required
                                 name="ccExpiry"
                                 onChange={handleChange}
+                                min={new Date().toISOString().split('T')[0]} // current date for input
                             />
                         </Col>
                         <Col>
@@ -200,6 +186,8 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                                 required
                                 name="ccCode"
                                 onChange={handleChange}
+                                minLength="3"
+                                maxLength="3"
                             />
                         </Col>
                     </Form.Row>
