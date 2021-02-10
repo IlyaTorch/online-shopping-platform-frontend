@@ -1,22 +1,22 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {createStructuredSelector} from "reselect";
+import {createStructuredSelector} from 'reselect';
 
 import './shopsPage.scss';
 
-import WithSpinner from "../../components/with-spinner/withSpinner";
-import ShopsList from "../../components/shopsList/ShopsList";
+import WithSpinner from '../../components/with-spinner/withSpinner';
+import ShopsList from '../../components/shopsList/ShopsList';
 
-import {selectShops, selectIsShopsLoading} from "../../redux/platform/platformSelectors";
+import {selectShops, selectIsShopsLoading} from '../../redux/platform/platformSelectors';
 
-import {fetchShopsStartAsync} from "../../redux/platform/platformActions";
+import {fetchShopsStartAsync} from '../../redux/platform/platformActions';
 
 
 const ShopsListWithSpinner = WithSpinner(ShopsList);
 
 
 class ShopsPage extends React.Component {
-    componentDidMount () {
+    componentDidMount() {
         this.props.fetchShopsStartAsync();
     }
 
@@ -30,11 +30,11 @@ class ShopsPage extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
     shops: selectShops,
-    isShopsLoaded: selectIsShopsLoading
+    isShopsLoaded: selectIsShopsLoading,
 });
 
-const mapDispatchToProps = dispatch => ({
-    fetchShopsStartAsync: () => dispatch(fetchShopsStartAsync())
+const mapDispatchToProps = (dispatch) => ({
+    fetchShopsStartAsync: () => dispatch(fetchShopsStartAsync()),
 });
 
 

@@ -1,12 +1,12 @@
-import React from "react";
-import {createStructuredSelector} from "reselect";
-import {connect} from "react-redux";
+import React from 'react';
+import {createStructuredSelector} from 'reselect';
+import {connect} from 'react-redux';
 
-import OrderForm from "../../components/order-form/OrderForm";
-import PaymentFailure from "../../components/payment-failure/PaymentFailure";
+import OrderForm from '../../components/order-form/OrderForm';
+import PaymentFailure from '../../components/payment-failure/PaymentFailure';
 
-import {selectCartItems, selectCartTotal} from "../../redux/cart/cartSelectors";
-import {selectPaymentErrorMessage, selectPaymentErrorStatus} from "../../redux/shop/shopSelectors";
+import {selectCartItems, selectCartTotal} from '../../redux/cart/cartSelectors';
+import {selectPaymentErrorMessage, selectPaymentErrorStatus} from '../../redux/shop/shopSelectors';
 
 
 const OrderPage = ({cartItems, total, paymentError, errorMessage}) => (
@@ -20,7 +20,7 @@ const mapStateToProps = createStructuredSelector({
     cartItems: selectCartItems,
     total: selectCartTotal,
     paymentError: selectPaymentErrorStatus,
-    errorMessage: selectPaymentErrorMessage
+    errorMessage: selectPaymentErrorMessage,
 });
 
 

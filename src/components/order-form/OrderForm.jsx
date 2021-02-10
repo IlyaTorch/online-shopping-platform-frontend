@@ -1,31 +1,31 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {Col, Form} from "react-bootstrap";
+import {connect} from 'react-redux';
+import {Col, Form} from 'react-bootstrap';
 
 import './orderForm.scss';
 
-import {PAYMENT_URL} from "../../url-data/urlData";
+import {PAYMENT_URL} from '../../url-data/urlData';
 
-import CustomButton from "../custom-button/CustomButton";
+import CustomButton from '../custom-button/CustomButton';
 
-import {showOrderError} from "../../redux/shop/shopActions";
+import {showOrderError} from '../../redux/shop/shopActions';
 
 
 const OrderForm = ({items, totalSum, showOrderError}) => {
     const initialFormData = Object.freeze({
-        email: "",
-        city: "",
-        province: "",
-        streetAddress: "",
-        postalCode: "",
+        email: '',
+        city: '',
+        province: '',
+        streetAddress: '',
+        postalCode: '',
 
-        fullName: "",
+        fullName: '',
 
-        ccNumber: "",
-        ccExpiry: "",
-        ccCode: "",
+        ccNumber: '',
+        ccExpiry: '',
+        ccCode: '',
 
-        saveUserData: false
+        saveUserData: false,
     });
 
     const [formData, updateFormData] = React.useState(initialFormData);
@@ -33,27 +33,27 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
     const handleChange = (event) => {
         updateFormData({
             ...formData,
-            [event.target.name]: event.target.value.trim()
+            [event.target.name]: event.target.value.trim(),
         });
     };
 
     const [validated, setValidated] = React.useState(false);
 
-    const pushOrder = order => fetch(PAYMENT_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(order)
-        })
-        .then(response => response.status === 201
-            ? window.location.href='success-payment'
-            : response.json())
+    const pushOrder = (order) => fetch(PAYMENT_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+        },
+        body: JSON.stringify(order),
+    })
+        .then((response) => response.status === 201 ?
+            window.location.href='success-payment' :
+            response.json())
         .then(({error}) => showOrderError(error));
 
-    const isCardNumberCorrect = cardNumber => cardNumber.length === 16;
-    const isCardExpiryCorrect = expiry => Date.parse(expiry) > Date.now();
-    const isSecurityCodeCorrect = code => code.length === 3;
+    const isCardNumberCorrect = (cardNumber) => cardNumber.length === 16;
+    const isCardExpiryCorrect = (expiry) => Date.parse(expiry) > Date.now();
+    const isSecurityCodeCorrect = (code) => code.length === 3;
 
     const validateCardData = ({ccNumber, ccExpiry, ccCode}) => {
         return isCardNumberCorrect(ccNumber) &&
@@ -78,29 +78,28 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                     city: formData.city,
                     province: formData.province,
                     postalCode: formData.postalCode,
-                    streetAddress: formData.streetAddress
+                    streetAddress: formData.streetAddress,
                 },
                 card: {
                     ccNumber: formData.ccNumber,
                     ccExpiry: formData.ccExpiry,
-                    ccCode: formData.ccCode
+                    ccCode: formData.ccCode,
                 },
                 totalSum: totalSum,
-                saveUserData: formData.saveUserData
+                saveUserData: formData.saveUserData,
             };
             if (validateCardData(order.card)) {
                 pushOrder(order);
-            }
-            else {
-                showOrderError("Incorrect card data!");
+            } else {
+                showOrderError('Incorrect card data!');
             }
         } else {
             event.preventDefault();
-            showOrderError("No items selected!");
+            showOrderError('No items selected!');
         }
 
         setValidated(true);
-        };
+    };
 
     return (
         <div className="order-form">
@@ -218,12 +217,12 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
                 <CustomButton type="submit">Submit</CustomButton>
             </Form>
         </div>
-  );
+    );
 };
 
 
-const mapDispatchToProps = dispatch => ({
-    showOrderError: errorMessage => dispatch(showOrderError(errorMessage))
+const mapDispatchToProps = (dispatch) => ({
+    showOrderError: (errorMessage) => dispatch(showOrderError(errorMessage)),
 });
 
 export default connect(null, mapDispatchToProps)(OrderForm);

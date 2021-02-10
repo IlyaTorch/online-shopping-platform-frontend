@@ -1,16 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
 
 import './header.scss';
 
-import {ReactComponent as Logo} from '../../assets/crown.svg'
-import CartIcon from "../cart-icon/CartIcon";
-import SearchForm from "../search-form/SearchForm";
-import CartDropdown from "../cart/cart-dropdown/CartDropdown";
+import {ReactComponent as Logo} from '../../assets/crown.svg';
+import CartIcon from '../cart-icon/CartIcon';
+import SearchForm from '../search-form/SearchForm';
+import CartDropdown from '../cart/cart-dropdown/CartDropdown';
 
-import {selectCartHidden} from "../../redux/cart/cartSelectors";
+import {selectCartHidden} from '../../redux/cart/cartSelectors';
 
 
 const Header = (props) => (
@@ -21,19 +21,18 @@ const Header = (props) => (
 
         <div className="options">
             {
-                !props.location.pathname.includes('/platform/')
-                ?
+                !props.location.pathname.includes('/platform/') ?
                     <span style={
                         {
                             display: 'flex',
                             flexDirection: 'row',
-                            alignItems: 'center'
+                            alignItems: 'center',
                         }
                     }>
-                    {props.location.pathname === '/' && <SearchForm />}
-                    <Link className="option" to="/shops">SHOPS</Link>
-                    </span>
-                : null
+                        {props.location.pathname === '/' && <SearchForm />}
+                        <Link className="option" to="/shops">SHOPS</Link>
+                    </span> :
+                    null
             }
 
             <Link className="option" to="/signin">
@@ -50,7 +49,7 @@ const Header = (props) => (
 );
 
 const mapStateToProps = createStructuredSelector({
-    hidden: selectCartHidden
+    hidden: selectCartHidden,
 });
 
 export default connect(mapStateToProps)(Header);

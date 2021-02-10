@@ -1,24 +1,23 @@
 export const addItemToCart = (cartItems, cartItemToAdd) => {
-    const existingCartItem = cartItems.find(cartItem =>
+    const existingCartItem = cartItems.find((cartItem) =>
         cartItem.id === cartItemToAdd.id &&
         cartItem.size === cartItemToAdd.size &&
-        cartItem.color === cartItemToAdd.color
+        cartItem.color === cartItemToAdd.color,
     );
 
     if (existingCartItem && existingCartItem.index) {
-        return cartItems.map((cartItem, index) => index === cartItemToAdd.index
-            ? {...cartItem, quantity: cartItem.quantity + 1}
-            : cartItem
-        )
-    }
-    else if (existingCartItem) {
-        return cartItems.map(cartItem =>
+        return cartItems.map((cartItem, index) => index === cartItemToAdd.index ?
+            {...cartItem, quantity: cartItem.quantity + 1} :
+            cartItem,
+        );
+    } else if (existingCartItem) {
+        return cartItems.map((cartItem) =>
             cartItem.id === cartItemToAdd.id &&
             cartItem.size === cartItemToAdd.size &&
-            cartItem.color === cartItemToAdd.color
-                ? {...cartItem, quantity: cartItem.quantity + 1}
-                : cartItem
-        )
+            cartItem.color === cartItemToAdd.color ?
+                {...cartItem, quantity: cartItem.quantity + 1} :
+                cartItem,
+        );
     }
 
     return [...cartItems, {...cartItemToAdd, quantity: 1}];
@@ -31,9 +30,9 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
         return cartItems.filter((cartItem, index) => index !== cartItemToRemove.index);
     }
 
-    return cartItems.map((cartItem, index) => index === cartItemToRemove.index
-        ? {...cartItem, quantity: cartItem.quantity - 1}
-        : cartItem
+    return cartItems.map((cartItem, index) => index === cartItemToRemove.index ?
+        {...cartItem, quantity: cartItem.quantity - 1} :
+        cartItem,
     );
 };
 
@@ -44,9 +43,9 @@ export const updateQuantityItemsInCart = (cartItems, {item: itemToUpdateQuantity
     if (newQuantity <= 0 || isNaN(newQuantity)) {
         return cartItems.filter((cartItem, index) => index !== itemToUpdateQuantity.index);
     } else {
-        return cartItems.map((cartItem, index) => index === itemToUpdateQuantity.index
-        ? {...cartItem, quantity: newQuantity}
-        : cartItem
-    );
+        return cartItems.map((cartItem, index) => index === itemToUpdateQuantity.index ?
+            {...cartItem, quantity: newQuantity} :
+            cartItem,
+        );
     }
 };

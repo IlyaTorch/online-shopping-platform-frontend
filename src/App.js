@@ -1,23 +1,22 @@
 import React from 'react';
-import {Switch, Route, Router} from "react-router-dom";
+import {Switch, Route, Router} from 'react-router-dom';
 
-import {createBrowserHistory} from "history";
+import {createBrowserHistory} from 'history';
 
 import './App.css';
 
-import Header from "./components/header/Header";
-import HomePage from "./pages/homepage/HomePage";
-import ShopsPage from "./pages/shops-page/ShopsPage";
-import ShopPage from "./pages/shop-page/ShopPage";
-import ItemPage from "./pages/item-page/ItemPage";
-import CheckoutPage from "./pages/checkout-page/CheckoutPage";
-import SuccessPaymentPage from "./pages/success-payment-page/SuccessPaymentPage";
-import OrderPage from "./pages/order-page/OrderPage";
-import Footer from "./components/footer/Footer";
+import Header from './components/header/Header';
+import HomePage from './pages/homepage/HomePage';
+import ShopsPage from './pages/shops-page/ShopsPage';
+import ShopPage from './pages/shop-page/ShopPage';
+import ItemPage from './pages/item-page/ItemPage';
+import CheckoutPage from './pages/checkout-page/CheckoutPage';
+import SuccessPaymentPage from './pages/success-payment-page/SuccessPaymentPage';
+import OrderPage from './pages/order-page/OrderPage';
+import Footer from './components/footer/Footer';
 
 
-
-let history = createBrowserHistory();
+const history = createBrowserHistory();
 
 const App = () => (
     <Router history={history}>

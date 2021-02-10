@@ -1,11 +1,10 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import {useHistory} from 'react-router-dom';
 import './item.scss';
 
 
-
 const Item = ({item}) => {
-    let history = useHistory();
+    const history = useHistory();
     const openItemPage = (shopId, itemId) => history.push(`/shops/${shopId}/${itemId}`);
     const goToItemPageOnClick = () => openItemPage(item.shop_id, item.id);
 
@@ -19,8 +18,8 @@ const Item = ({item}) => {
                 <span className="price">{item.price}$</span>
             </div>
         </div>
-    )
-}
+    );
+};
 
 
 export default Item;

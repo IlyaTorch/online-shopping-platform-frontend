@@ -1,27 +1,27 @@
-import React from "react";
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
+import React from 'react';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
 
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import './itempage.scss';
 
-import ShopHeader from "../../components/shop-header/ShopHeader";
-import ItemBody from "../../components/item-body/ItemBody";
-import SimilarItems from "../../components/similar-items/SimilarItems";
-import WithSpinner from "../../components/with-spinner/withSpinner";
+import ShopHeader from '../../components/shop-header/ShopHeader';
+import ItemBody from '../../components/item-body/ItemBody';
+import SimilarItems from '../../components/similar-items/SimilarItems';
+import WithSpinner from '../../components/with-spinner/withSpinner';
 
 import {
     selectIsItemsLoading,
     selectIsShopLoading,
     selectItemList,
-    selectShopObj
-} from "../../redux/shop/shopSelectors";
+    selectShopObj,
+} from '../../redux/shop/shopSelectors';
 
 import {
     fetchItemsStartAsync,
     fetchShopStartAsync,
-} from "../../redux/shop/shopActions";
+} from '../../redux/shop/shopActions';
 
 
 const ShopHeaderWithSpinner = WithSpinner(ShopHeader);
@@ -37,12 +37,13 @@ class ItemPage extends React.Component {
         this.itemId = parseInt(this.props.match.params.itemId);
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.props.fetchShopStartAsync(this.shopId);
         this.props.fetchItemsStartAsync(this.shopId);
     }
 
-    componentWillReceiveProps (nextProps, nextContext) {
+    // eslint-disable-next-line react/no-deprecated
+    componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.location.pathname !== nextProps.location.pathname) {
             const {itemId: newItemId} = nextProps.match.params;
             this.itemId = parseInt(newItemId);
@@ -60,16 +61,20 @@ class ItemPage extends React.Component {
                 />
                 <ItemBodyWithSpinner
                     isLoading={!this.props.isItemsLoaded}
-                    item={this.props.isItemsLoaded && this.props.items.find (item => item.id === this.itemId)}
+                    item={
+                        this.props.isItemsLoaded && this.props.items.find((item) => item.id === this.itemId)
+                    }
                 />
 
                 <SimilarItemsWithSpinner
                     isLoading={!this.props.isItemsLoaded}
-                    mainItem={this.props.isItemsLoaded && this.props.items.find (item => item.id === this.itemId)}
+                    mainItem={
+                        this.props.isItemsLoaded && this.props.items.find((item) => item.id === this.itemId)
+                    }
                     shopItems={this.props.items}
                 />
             </div>
-        )
+        );
     }
 }
 
@@ -81,7 +86,7 @@ const mapStateToProps = createStructuredSelector({
     items: selectItemList,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
     fetchShopStartAsync: (shopId) => dispatch(fetchShopStartAsync(shopId)),
     fetchItemsStartAsync: (shopId) => dispatch(fetchItemsStartAsync(shopId)),
 });
