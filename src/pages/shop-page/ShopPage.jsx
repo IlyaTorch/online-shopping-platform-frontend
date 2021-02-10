@@ -1,13 +1,13 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
 
 import './shopPage.scss';
 
-import About from "../../components/about/About";
-import ShopHeader from "../../components/shop-header/ShopHeader";
-import ItemsList from "../../components/items-list/ItemsList";
-import WithSpinner from "../../components/with-spinner/withSpinner";
+import About from '../../components/about/About';
+import ShopHeader from '../../components/shop-header/ShopHeader';
+import ItemsList from '../../components/items-list/ItemsList';
+import WithSpinner from '../../components/with-spinner/withSpinner';
 
 import {
     selectDisplayingAllItemsStatus, selectDisplayingLimitedItems, selectDisplayingItemsFromCategory,
@@ -20,12 +20,12 @@ import {
     selectIsItemsLoading,
     selectShopObj,
     selectIsShopLoading,
-} from "../../redux/shop/shopSelectors";
+} from '../../redux/shop/shopSelectors';
 
 import {
     fetchShopStartAsync,
-    fetchItemsStartAsync
-} from "../../redux/shop/shopActions";
+    fetchItemsStartAsync,
+} from '../../redux/shop/shopActions';
 
 
 const ShopHeaderWithSpinner = WithSpinner(ShopHeader);
@@ -39,7 +39,7 @@ class ShopPage extends React.Component {
         this.shopId = this.props.match.params.shopId;
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.props.fetchShopStartAsync(this.shopId);
         this.props.fetchItemsStartAsync(this.shopId);
     }
@@ -55,28 +55,29 @@ class ShopPage extends React.Component {
                 />
 
                 <div className="items-container">
-                {
-                    this.props.displayAllItems ? <ItemsListWithSpinner
-                                                    isLoading={!this.props.isItemsLoaded}
-                                                    items={this.props.shopItems}
-                                                  /> :
-                        this.props.displayLimitedItems ? <ItemsListWithSpinner
-                                                            isLoading={!this.props.isItemsLoaded}
-                                                            items={this.props.limitedItems}
-                                                          /> :
-                            this.props.displayItemsByRequestFromSearchForm ? <ItemsListWithSpinner
-                                                                                    isLoading={!this.props.isItemsLoaded}
-                                                                                    items={this.props.itemsByRequestFromSearchForm}
-                                                                                  /> :
-                                this.props.displayItemsFromCategory ? <ItemsListWithSpinner
-                                                                        isLoading={!this.props.isItemsLoaded}
-                                                                        items={this.props.itemsFromCategory}
-                                                                       /> :
-                                    this.props.displayAbout ? <About infoAbout={this.props.shop.about}/> : null
-                }
+                    {
+                        this.props.displayAllItems ? <ItemsListWithSpinner
+                            isLoading={!this.props.isItemsLoaded}
+                            items={this.props.shopItems}
+                        /> :
+                            this.props.displayLimitedItems ? <ItemsListWithSpinner
+                                isLoading={!this.props.isItemsLoaded}
+                                items={this.props.limitedItems}
+                            /> :
+                                this.props.displayItemsByRequestFromSearchForm ? <ItemsListWithSpinner
+                                    isLoading={!this.props.isItemsLoaded}
+                                    items={this.props.itemsByRequestFromSearchForm}
+                                /> :
+                                    this.props.displayItemsFromCategory ? <ItemsListWithSpinner
+                                        isLoading={!this.props.isItemsLoaded}
+                                        items={this.props.itemsFromCategory}
+                                    /> :
+                                        this.props.displayAbout ?
+                                            <About infoAbout={this.props.shop.about}/> : null
+                    }
                 </div>
             </div>
-        )
+        );
     }
 }
 
@@ -94,12 +95,12 @@ const mapStateToProps = createStructuredSelector({
     displayLimitedItems: selectDisplayingLimitedItems,
     displayItemsFromCategory: selectDisplayingItemsFromCategory,
     displayItemsByRequestFromSearchForm: selectDisplayingItemsByRequestFromSearchForm,
-    displayAbout: selectDisplayingAboutComponentStatus
+    displayAbout: selectDisplayingAboutComponentStatus,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
     fetchItemsStartAsync: (shopId) => dispatch(fetchItemsStartAsync(shopId)),
-    fetchShopStartAsync: (shopId) => dispatch(fetchShopStartAsync(shopId))
+    fetchShopStartAsync: (shopId) => dispatch(fetchShopStartAsync(shopId)),
 });
 
 

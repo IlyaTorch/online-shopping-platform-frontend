@@ -1,14 +1,15 @@
-import React from "react";
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
+import React from 'react';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
 
-import {selectCartItems} from "../../redux/cart/cartSelectors";
-import {selectCartTotal} from "../../redux/cart/cartSelectors";
+import {selectCartItems} from '../../redux/cart/cartSelectors';
+import {selectCartTotal} from '../../redux/cart/cartSelectors';
 
-import "./checkoutPage.scss";
+import './checkoutPage.scss';
 
-import CheckoutItem from "../../components/checkout-item/CheckoutItem";
-import CustomButton from "../../components/custom-button/CustomButton";
+import CheckoutItem from '../../components/checkout-item/CheckoutItem';
+import CustomButton from '../../components/custom-button/CustomButton';
+import {Link} from 'react-router-dom';
 
 
 const CheckoutPage = ({cartItems, total}) => (
@@ -32,21 +33,27 @@ const CheckoutPage = ({cartItems, total}) => (
         </div>
 
         {
-            cartItems.map((cartItem, index) => <CheckoutItem key={index} cartItem={cartItem} />)
+            cartItems.map(
+                (cartItem, index) => <CheckoutItem key={index} cartItem={{...cartItem, index: index}} />,
+            )
         }
 
         <div className="total">
             <span>TOTAL: ${total}</span>
         </div>
 
-        <CustomButton>BUY</CustomButton>
+        {total > 0 &&
+            <Link to='/order-form'>
+                <CustomButton>Checkout</CustomButton>
+            </Link>
+        }
     </div>
 );
 
 
 const mapStateToProps = createStructuredSelector({
     cartItems: selectCartItems,
-    total: selectCartTotal
+    total: selectCartTotal,
 });
 
 

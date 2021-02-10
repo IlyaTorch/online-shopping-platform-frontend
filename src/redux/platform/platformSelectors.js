@@ -1,21 +1,21 @@
-import {createSelector} from "reselect";
+import {createSelector} from 'reselect';
 
 
-export const selectPlatform = state => {
-    return state.platform
+export const selectPlatform = (state) => {
+    return state.platform;
 };
 
 export const selectShops = createSelector(
     [selectPlatform],
-    platform => platform.shops
+    (platform) => platform.shops,
 );
 
 export const selectIsShopsFetching = createSelector(
     [selectPlatform],
-    platform => platform.isFetching
+    (platform) => platform.isFetching,
 );
 
 export const selectIsShopsLoading = createSelector(
     [selectPlatform],
-    platform => !!platform.shops
+    (platform) => !!platform.shops,
 );

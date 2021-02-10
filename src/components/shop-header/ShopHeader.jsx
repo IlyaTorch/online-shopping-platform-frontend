@@ -1,22 +1,22 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
 
 import './shopHeader.scss';
 
-import CustomButton from "../custom-button/CustomButton";
-import CategoriesDropdown from "../categories-dropdown/CategoriesDropdown";
-import SearchForm from "../search-form/SearchForm";
-import WithSpinner from "../with-spinner/withSpinner";
+import CustomButton from '../custom-button/CustomButton';
+import CategoriesDropdown from '../categories-dropdown/CategoriesDropdown';
+import SearchForm from '../search-form/SearchForm';
+import WithSpinner from '../with-spinner/withSpinner';
 
-import {selectCategories, selectIsCategoriesLoading} from "../../redux/shop/shopSelectors";
+import {selectCategories, selectIsCategoriesLoading} from '../../redux/shop/shopSelectors';
 
 import {
     fetchCategoriesStartAsync,
     displayAllItems,
     displayAboutComponent,
-    displayLimitedItems
-} from "../../redux/shop/shopActions";
+    displayLimitedItems,
+} from '../../redux/shop/shopActions';
 
 
 const CategoriesDropdownWithSpinner = WithSpinner(CategoriesDropdown);
@@ -31,7 +31,7 @@ class ShopHeader extends React.Component {
         };
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.props.fetchCategoriesStartAsync();
     }
 
@@ -46,7 +46,7 @@ class ShopHeader extends React.Component {
 
     render() {
         const allItemsOnClick = () => {
-            this.isCurrentPageItemPage() &&  this.returnToTheShopPage();
+            this.isCurrentPageItemPage() && this.returnToTheShopPage();
             this.props.displayAllItems();
             this.setState({displayCategoriesDropdown: false});
         };
@@ -56,13 +56,13 @@ class ShopHeader extends React.Component {
         };
 
         const limitedOfferItemsOnClick = () => {
-            this.isCurrentPageItemPage() &&  this.returnToTheShopPage();
+            this.isCurrentPageItemPage() && this.returnToTheShopPage();
             this.props.displayLimitedItems();
             this.setState({displayCategoriesDropdown: false});
         };
 
         const aboutOnClick = () => {
-            this.isCurrentPageItemPage() &&  this.returnToTheShopPage();
+            this.isCurrentPageItemPage() && this.returnToTheShopPage();
             this.props.displayAboutComponent();
             this.setState({displayCategoriesDropdown: false});
         };
@@ -108,23 +108,22 @@ class ShopHeader extends React.Component {
                     </CustomButton>
                 </div>
             </div>
-        )
+        );
     }
 }
 
 
 const mapStateToProps = createStructuredSelector({
     categoriesLoaded: selectIsCategoriesLoading,
-    categories: selectCategories
+    categories: selectCategories,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
     fetchCategoriesStartAsync: () => dispatch(fetchCategoriesStartAsync()),
     displayAllItems: () => dispatch(displayAllItems()),
     displayAboutComponent: () => dispatch(displayAboutComponent()),
-    displayLimitedItems: () => dispatch(displayLimitedItems())
+    displayLimitedItems: () => dispatch(displayLimitedItems()),
 });
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopHeader);

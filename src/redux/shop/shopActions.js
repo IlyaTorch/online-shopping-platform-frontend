@@ -1,140 +1,157 @@
-import {ShopItemsActionTypes} from "./shopTypes";
-import {API_CATEGORIES_URL, API_SHOPS_URL} from "../../url-data/urlData";
+import {ShopItemsActionTypes} from './shopTypes';
+import {API_CATEGORIES_URL, API_SHOPS_URL} from '../../url-data/urlData';
 
 
 export const displayAllItems = () => (
     {
-        type: ShopItemsActionTypes.DISPLAY_ALL_ITEMS
+        type: ShopItemsActionTypes.DISPLAY_ALL_ITEMS,
     }
 );
 
 export const displayLimitedItems = () => (
     {
-        type: ShopItemsActionTypes.DISPLAY_LIMITED_ITEMS
+        type: ShopItemsActionTypes.DISPLAY_LIMITED_ITEMS,
     }
 );
 
 export const displayItemsFromCategory = () => (
     {
-        type: ShopItemsActionTypes.DISPLAY_ITEMS_FROM_CATEGORY
+        type: ShopItemsActionTypes.DISPLAY_ITEMS_FROM_CATEGORY,
     }
 );
 
 export const displayItemsByRequestFromSearchForm = () => (
     {
-        type: ShopItemsActionTypes.DISPLAY_ITEMS_BY_REQUEST_FROM_SEARCH_FORM
+        type: ShopItemsActionTypes.DISPLAY_ITEMS_BY_REQUEST_FROM_SEARCH_FORM,
     }
 );
 
 export const displayAboutComponent = () => (
     {
-        type: ShopItemsActionTypes.DISPLAY_ABOUT
+        type: ShopItemsActionTypes.DISPLAY_ABOUT,
     }
 );
 
-export const updateItemList = items => (
+export const updateItemList = (items) => (
     {
         type: ShopItemsActionTypes.UPDATE_ITEMS_LIST,
-        payload: items
+        payload: items,
     }
 );
 
-export const updateItemsByRequestFromSearchForm = items => (
+export const updateItemsByRequestFromSearchForm = (items) => (
     {
         type: ShopItemsActionTypes.UPDATE_ITEMS_BY_REQUEST_FROM_SEARCH_FORM,
-        payload: items
+        payload: items,
     }
 );
 
-export const updateItemsFromCategory = items => (
+export const updateItemsFromCategory = (items) => (
     {
         type: ShopItemsActionTypes.UPDATE_ITEMS_FROM_CATEGORY,
-        payload: items
+        payload: items,
     }
 );
 
 
-/////////FETCHING SHOP////////
+// ///////FETCHING SHOP////////
 export const fetchShopStart = () => ({
     type: ShopItemsActionTypes.FETCH_SHOP_START,
 });
 
-export const fetchShopSuccess = shop => ({
+export const fetchShopSuccess = (shop) => ({
     type: ShopItemsActionTypes.FETCH_SHOP_SUCCESS,
-    payload: shop
+    payload: shop,
 });
 
-export const fetchShopFailure = errorMessage => ({
+export const fetchShopFailure = (errorMessage) => ({
     type: ShopItemsActionTypes.FETCH_SHOP_FAILURE,
-    payload: errorMessage
+    payload: errorMessage,
 });
 
 export const fetchShopStartAsync = (shopId) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(fetchShopStart());
 
         fetch(`${API_SHOPS_URL}/${shopId}`)
-        .then(response => response.json())
-        .then(shop => {
-            dispatch(fetchShopSuccess(shop));
-        })
-        .catch(error => dispatch(fetchShopFailure(error.message)));
+            .then((response) => response.json())
+            .then((shop) => {
+                dispatch(fetchShopSuccess(shop));
+            })
+            .catch((error) => dispatch(fetchShopFailure(error.message)));
     };
 };
 
-/////////FETCHING SHOP ITEMS////////
+// ///////FETCHING SHOP ITEMS////////
 export const fetchItemsStart = () => ({
     type: ShopItemsActionTypes.FETCH_ITEMS_START,
 });
 
-export const fetchItemsSuccess = items => ({
+export const fetchItemsSuccess = (items) => ({
     type: ShopItemsActionTypes.FETCH_ITEMS_SUCCESS,
-    payload: items
+    payload: items,
 });
 
-export const fetchItemsFailure = errorMessage => ({
+export const fetchItemsFailure = (errorMessage) => ({
     type: ShopItemsActionTypes.FETCH_ITEMS_FAILURE,
-    payload: errorMessage
+    payload: errorMessage,
 });
 
 export const fetchItemsStartAsync = (shopId) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(fetchItemsStart());
 
         fetch(`${API_SHOPS_URL}/${shopId}/items/`)
-        .then(response => response.json())
-        .then(items => {
-            dispatch(fetchItemsSuccess(items));
-            dispatch(updateItemsByRequestFromSearchForm(items));
-        })
-        .catch(error => dispatch(fetchItemsFailure(error.message)));
+            .then((response) => response.json())
+            .then((items) => {
+                dispatch(fetchItemsSuccess(items));
+                dispatch(updateItemsByRequestFromSearchForm(items));
+            })
+            .catch((error) => dispatch(fetchItemsFailure(error.message)));
     };
 };
 
-/////////FETCHING CATEGORIES////////
+// ///////FETCHING CATEGORIES////////
 export const fetchCategoriesStart = () => ({
     type: ShopItemsActionTypes.FETCH_CATEGORIES_START,
 });
 
-export const fetchCategoriesSuccess = categories => ({
+export const fetchCategoriesSuccess = (categories) => ({
     type: ShopItemsActionTypes.FETCH_CATEGORIES_SUCCESS,
-    payload: categories
+    payload: categories,
 });
 
-export const fetchCategoriesFailure = errorMessage => ({
+export const fetchCategoriesFailure = (errorMessage) => ({
     type: ShopItemsActionTypes.FETCH_CATEGORIES_FAILURE,
-    payload: errorMessage
+    payload: errorMessage,
 });
 
 export const fetchCategoriesStartAsync = () => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(fetchCategoriesStart());
 
         fetch(`${API_CATEGORIES_URL}/`)
-        .then(response => response.json())
-        .then(categories => {
-            dispatch(fetchCategoriesSuccess(categories));
-        })
-        .catch(error => dispatch(fetchCategoriesFailure(error.message)));
+            .then((response) => response.json())
+            .then((categories) => {
+                dispatch(fetchCategoriesSuccess(categories));
+            })
+            .catch((error) => dispatch(fetchCategoriesFailure(error.message)));
     };
 };
+
+export const showOrderError = (errorMessage) => {
+    return (dispatch) => {
+        dispatch({
+            type: ShopItemsActionTypes.SHOW_ORDER_ERROR,
+            payload: errorMessage,
+        });
+
+        setTimeout(() => {
+            dispatch(hideOrderError());
+        }, 3000);
+    };
+};
+
+export const hideOrderError = () => ({
+    type: ShopItemsActionTypes.HIDE_ORDER_ERROR,
+});

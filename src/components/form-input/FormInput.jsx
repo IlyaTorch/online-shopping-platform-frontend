@@ -16,8 +16,8 @@ const FormInput = ({handleChange, label, ...otherProps}) => (
                     <label className="form-input-label">
                         {label}
                     </label>
-                )
-                : null
+                ) :
+                null
         }
     </div>
 );

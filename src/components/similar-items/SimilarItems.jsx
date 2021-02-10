@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 import './similarItems.scss';
 
-import Item from "../item/Item";
+import Item from '../item/Item';
 
 
 const SimilarItems = ({mainItem, shopItems}) => (
@@ -11,9 +11,9 @@ const SimilarItems = ({mainItem, shopItems}) => (
         <div className="similar-items-list">
             {
                 shopItems
-                    .filter(item => item.id !== mainItem.id && item.category === mainItem.category)
+                    .filter((item) => item.id !== mainItem.id && item.category === mainItem.category)
                     .slice(0, 3)
-                    .map(item => <Item key={item.id} item={item}/>)
+                    .map((item) => <Item key={item.id} item={item}/>)
             }
         </div>
     </div>
