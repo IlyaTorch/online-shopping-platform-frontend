@@ -63,10 +63,11 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
+
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
-        } else {
+        } else if (items.length) {
             event.preventDefault();
 
             const order = {
@@ -93,6 +94,9 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
             else {
                 showOrderError("Incorrect card data!");
             }
+        } else {
+            event.preventDefault();
+            showOrderError("No items selected!");
         }
 
         setValidated(true);
