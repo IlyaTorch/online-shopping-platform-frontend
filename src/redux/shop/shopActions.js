@@ -75,9 +75,7 @@ export const fetchShopStartAsync = (shopId) => {
 
         fetch(`${API_SHOPS_URL}/${shopId}`)
             .then((response) => response.json())
-            .then((shop) => {
-                dispatch(fetchShopSuccess(shop));
-            })
+            .then((shop) => dispatch(fetchShopSuccess(shop)))
             .catch((error) => dispatch(fetchShopFailure(error.message)));
     };
 };
@@ -132,9 +130,7 @@ export const fetchCategoriesStartAsync = () => {
 
         fetch(`${API_CATEGORIES_URL}/`)
             .then((response) => response.json())
-            .then((categories) => {
-                dispatch(fetchCategoriesSuccess(categories));
-            })
+            .then((categories) => dispatch(fetchCategoriesSuccess(categories)))
             .catch((error) => dispatch(fetchCategoriesFailure(error.message)));
     };
 };

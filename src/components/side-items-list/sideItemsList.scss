@@ -1,0 +1,21 @@
+.side-items-container {
+  margin-top: 0;
+  margin-bottom: 20px;
+  margin-right: 12vw;
+  width: 650px;
+  border-left: 1px solid black;
+}
+
+.side-items {
+  margin-left: 50px;
+  width: 450px;
+  height: 500px;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.total {
+  margin-top: 20px;
+  margin-left: 50px;
+}
