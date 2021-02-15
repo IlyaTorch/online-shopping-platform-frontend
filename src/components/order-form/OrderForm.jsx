@@ -39,17 +39,29 @@ const OrderForm = ({items, totalSum, showOrderError}) => {
 
     const [validated, setValidated] = React.useState(false);
 
-    const pushOrder = (order) => fetch(PAYMENT_URL, {
+    const pushOrder = (order, errorStatus=undefined) => fetch(PAYMENT_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
         },
         body: JSON.stringify(order),
     })
-        .then((response) => response.status === 201 ?
-            window.location.href='success-payment' :
-            response.json())
-        .then(({error}) => showOrderError(error));
+        .then((response) => {
+            if (response.status === 201) {
+                window.location.href = 'success-payment';
+            } else {
+                response.json().then(({error}) => showOrderError(error));
+            }
+        })
+        .catch((error) => {
+            if (!error.response) {
+                errorStatus = 'Network Error';
+            } else {
+                errorStatus = error.response.data.message;
+            }
+
+            showOrderError(errorStatus);
+        });
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
