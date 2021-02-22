@@ -11,45 +11,63 @@ import SearchForm from '../search-form/SearchForm';
 import CartDropdown from '../cart/cart-dropdown/CartDropdown';
 
 import {selectCartHidden} from '../../redux/cart/cartSelectors';
+import {selectCurrentUser} from '../../redux/user/userSelector';
+import {setCurrentUser} from '../../redux/user/userActions';
 
 
-const Header = (props) => (
-    <div className="header">
-        <Link className="logo-container" to="/">
-            <Logo className="logo"/>
-        </Link>
+const Header = ({location, hidden, currentUser, setCurrentUser}) => {
+    const signOut = () => {
+        setCurrentUser(null);
+    };
 
-        <div className="options">
-            {
-                !props.location.pathname.includes('/platform/') ?
-                    <span style={
-                        {
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }
-                    }>
-                        {props.location.pathname === '/' && <SearchForm />}
-                        <Link className="option" to="/shops">SHOPS</Link>
-                    </span> :
-                    null
-            }
-
-            <Link className="option" to="/signin">
-                SIGN IN
+    return (
+        <div className="header">
+            <Link className="logo-container" to="/">
+                <Logo className="logo"/>
             </Link>
 
-            <CartIcon />
-        </div>
-        {
-            props.hidden ? null : <CartDropdown />
-        }
+            <div className="options">
+                {
+                    !location.pathname.includes('/platform/') ?
+                        <span style={
+                            {
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }
+                        }>
+                            {location.pathname === '/' && <SearchForm />}
+                            <Link className="option" to="/shops">SHOPS</Link>
+                        </span> :
+                        null
+                }
 
-    </div>
-);
+                {!currentUser ?
+                    <Link className="option" to="/signin">
+                        SIGN IN
+                    </Link> :
+                    <span
+                        className="option"
+                        onClick={signOut}
+                    >SIGN OUT</span>
+                }
+
+                <CartIcon />
+            </div>
+            {
+                hidden ? null : <CartDropdown />
+            }
+        </div>
+    );
+};
 
 const mapStateToProps = createStructuredSelector({
     hidden: selectCartHidden,
+    currentUser: selectCurrentUser,
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
