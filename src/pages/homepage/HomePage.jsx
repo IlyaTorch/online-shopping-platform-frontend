@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect';
+import ReactPaginate from 'react-paginate';
 
 import './homepage.scss';
 
-import {API_URL} from '../../url-data/urlData';
+import {API_URL, API_PAGE_URL} from '../../url-data/urlData';
 
 import {selectItemsByRequestFromSearchForm} from '../../redux/shop/shopSelectors';
 
@@ -23,13 +24,29 @@ class HomePage extends React.Component {
 
         this.state = {
             loading: true,
+            numPages: 0,
         };
     }
 
     componentDidMount() {
         fetch(`${API_URL}/`)
             .then((response) => response.json())
-            .then((items) => {
+            .then((parsedResponse) => {
+                const items = parsedResponse.results;
+                this.setState({numPages: Math.round(parsedResponse.count / items.length)});
+                this.props.updateItems(items);
+                this.props.updateItemsByRequestFromSearchForm(items);
+                this.setState({loading: false});
+            });
+    }
+
+    handlePageClick = (data) => {
+        const pageNum = data.selected + 1;
+
+        fetch(`${API_PAGE_URL}${pageNum}`)
+            .then((response) => response.json())
+            .then(({results: items}) => {
+                this.setState({loading: true});
                 this.props.updateItems(items);
                 this.props.updateItemsByRequestFromSearchForm(items);
                 this.setState({loading: false});
@@ -44,6 +61,27 @@ class HomePage extends React.Component {
                     isLoading={this.state.loading}
                     items={this.props.itemsByRequestFromSearchForm}
                 />
+                <nav aria-label="Page navigation example">
+                    <ReactPaginate
+                        previousLabel={'Previous'}
+                        nextLabel={'Next'}
+                        breakLabel={'...'}
+                        breakClassName={'break-me'}
+                        pageCount={this.state.numPages}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={this.handlePageClick}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                        previousClassName="page-item"
+                        nextClassName="page-item"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousLinkClassName="page-link"
+                        nextLinkClassName="page-link"
+                        disabledClassName="disabled"
+                    />
+                </nav>
             </div>
         );
     }
