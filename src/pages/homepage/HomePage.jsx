@@ -61,27 +61,25 @@ class HomePage extends React.Component {
                     isLoading={this.state.loading}
                     items={this.props.itemsByRequestFromSearchForm}
                 />
-                <nav aria-label="Page navigation example">
-                    <ReactPaginate
-                        previousLabel={'Previous'}
-                        nextLabel={'Next'}
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        pageCount={this.state.numPages}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={this.handlePageClick}
-                        containerClassName={'pagination'}
-                        activeClassName={'active'}
-                        previousClassName="page-item"
-                        nextClassName="page-item"
-                        pageClassName="page-item"
-                        pageLinkClassName="page-link"
-                        previousLinkClassName="page-link"
-                        nextLinkClassName="page-link"
-                        disabledClassName="disabled"
-                    />
-                </nav>
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={this.state.numPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={'pagination'}
+                    activeClassName={'active'}
+                    previousClassName="page-item"
+                    nextClassName="page-item"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousLinkClassName="page-link"
+                    nextLinkClassName="page-link"
+                    disabledClassName="disabled"
+                />
             </div>
         );
     }

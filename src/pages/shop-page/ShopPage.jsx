@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactPaginate from 'react-paginate';
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect';
 
@@ -13,6 +14,7 @@ import {
     selectDisplayingAllItemsStatus, selectDisplayingLimitedItems, selectDisplayingItemsFromCategory,
     selectDisplayingAboutComponentStatus,
 
+    selectNumPages,
     selectItemList,
     selectLimitedItems,
     selectItemsFromCategory, selectDisplayingItemsByRequestFromSearchForm, selectItemsByRequestFromSearchForm,
@@ -24,7 +26,7 @@ import {
 
 import {
     fetchShopStartAsync,
-    fetchItemsStartAsync,
+    fetchItemsStartAsync, fetchNumPagesAsync,
 } from '../../redux/shop/shopActions';
 
 
@@ -40,8 +42,15 @@ class ShopPage extends React.Component {
     }
 
     componentDidMount() {
+        this.props.fetchNumPagesAsync(this.shopId);
         this.props.fetchShopStartAsync(this.shopId);
         this.props.fetchItemsStartAsync(this.shopId);
+    }
+
+    handlePageClick = (data) => {
+        const pageNum = data.selected + 1;
+
+        this.props.fetchItemsStartAsync(this.shopId, pageNum);
     }
 
     render() {
@@ -76,6 +85,25 @@ class ShopPage extends React.Component {
                                             <About infoAbout={this.props.shop.about}/> : null
                     }
                 </div>
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={this.props.numPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={'pagination'}
+                    activeClassName={'active'}
+                    previousClassName="page-item"
+                    nextClassName="page-item"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousLinkClassName="page-link"
+                    nextLinkClassName="page-link"
+                    disabledClassName="disabled"
+                />
             </div>
         );
     }
@@ -86,6 +114,8 @@ const mapStateToProps = createStructuredSelector({
     shop: selectShopObj,
     isItemsLoaded: selectIsItemsLoading,
     shopItems: selectItemList,
+
+    numPages: selectNumPages,
 
     limitedItems: selectLimitedItems,
     itemsFromCategory: selectItemsFromCategory,
@@ -99,7 +129,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchItemsStartAsync: (shopId) => dispatch(fetchItemsStartAsync(shopId)),
+    fetchNumPagesAsync: (shopId) => dispatch(fetchNumPagesAsync(shopId)),
+    fetchItemsStartAsync: (shopId, pageNum) => dispatch(fetchItemsStartAsync(shopId, pageNum)),
     fetchShopStartAsync: (shopId) => dispatch(fetchShopStartAsync(shopId)),
 });
 

@@ -95,13 +95,31 @@ export const fetchItemsFailure = (errorMessage) => ({
     payload: errorMessage,
 });
 
-export const fetchItemsStartAsync = (shopId) => {
+export const setNumPages = (numPages) => ({
+    type: ShopItemsActionTypes.SET_NUM_PAGES,
+    payload: numPages,
+});
+
+export const fetchNumPagesAsync = (shopId) => {
+    return (dispatch) => {
+        fetch(`${API_SHOPS_URL}/${shopId}/items/`)
+            .then((response) => response.json())
+            .then((parsedResponse) => {
+                const items = parsedResponse.results;
+                dispatch(setNumPages(Math.round(parsedResponse.count / items.length)));
+            })
+            .catch((error) => dispatch(fetchItemsFailure(error.message)));
+    };
+};
+
+export const fetchItemsStartAsync = (shopId, pageNum=1) => {
     return (dispatch) => {
         dispatch(fetchItemsStart());
 
-        fetch(`${API_SHOPS_URL}/${shopId}/items/`)
+        fetch(`${API_SHOPS_URL}/${shopId}/items/?page=${pageNum}`)
             .then((response) => response.json())
-            .then((items) => {
+            .then((parsedResponse) => {
+                const items = parsedResponse.results;
                 dispatch(fetchItemsSuccess(items));
                 dispatch(updateItemsByRequestFromSearchForm(items));
             })
