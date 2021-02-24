@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactPaginate from 'react-paginate';
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect';
 
@@ -8,6 +7,7 @@ import './shopPage.scss';
 import About from '../../components/about/About';
 import ShopHeader from '../../components/shop-header/ShopHeader';
 import ItemsList from '../../components/items-list/ItemsList';
+import ShopPageItemsList from '../../components/shop-page-items-list/ShopPageItemsList';
 import WithSpinner from '../../components/with-spinner/withSpinner';
 
 import {
@@ -24,14 +24,12 @@ import {
     selectIsShopLoading,
 } from '../../redux/shop/shopSelectors';
 
-import {
-    fetchShopStartAsync,
-    fetchItemsStartAsync, fetchNumPagesAsync,
-} from '../../redux/shop/shopActions';
+import {fetchShopStartAsync} from '../../redux/shop/shopActions';
+
+import {API_SHOPS_URL} from '../../url-data/urlData';
 
 
 const ShopHeaderWithSpinner = WithSpinner(ShopHeader);
-const ItemsListWithSpinner = WithSpinner(ItemsList);
 
 
 class ShopPage extends React.Component {
@@ -42,15 +40,7 @@ class ShopPage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchNumPagesAsync(this.shopId);
         this.props.fetchShopStartAsync(this.shopId);
-        this.props.fetchItemsStartAsync(this.shopId);
-    }
-
-    handlePageClick = (data) => {
-        const pageNum = data.selected + 1;
-
-        this.props.fetchItemsStartAsync(this.shopId, pageNum);
     }
 
     render() {
@@ -62,48 +52,25 @@ class ShopPage extends React.Component {
                     history={this.props.history}
                     match={this.props.match}
                 />
-
                 <div className="items-container">
                     {
-                        this.props.displayAllItems ? <ItemsListWithSpinner
-                            isLoading={!this.props.isItemsLoaded}
+                        this.props.displayAllItems ? <ShopPageItemsList
                             items={this.props.shopItems}
                         /> :
-                            this.props.displayLimitedItems ? <ItemsListWithSpinner
-                                isLoading={!this.props.isItemsLoaded}
+                            this.props.displayLimitedItems ? <ShopPageItemsList
                                 items={this.props.limitedItems}
                             /> :
-                                this.props.displayItemsByRequestFromSearchForm ? <ItemsListWithSpinner
-                                    isLoading={!this.props.isItemsLoaded}
+                                this.props.displayItemsByRequestFromSearchForm ? <ShopPageItemsList
                                     items={this.props.itemsByRequestFromSearchForm}
                                 /> :
-                                    this.props.displayItemsFromCategory ? <ItemsListWithSpinner
-                                        isLoading={!this.props.isItemsLoaded}
+                                    this.props.displayItemsFromCategory ? <ShopPageItemsList
                                         items={this.props.itemsFromCategory}
                                     /> :
                                         this.props.displayAbout ?
-                                            <About infoAbout={this.props.shop.about}/> : null
+                                            <About infoAbout={this.props.shop.about}/> :
+                                            <ItemsList url={`${API_SHOPS_URL}/${this.shopId}/items`} />
                     }
                 </div>
-                <ReactPaginate
-                    previousLabel={'Previous'}
-                    nextLabel={'Next'}
-                    breakLabel={'...'}
-                    breakClassName={'break-me'}
-                    pageCount={this.props.numPages}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handlePageClick}
-                    containerClassName={'pagination'}
-                    activeClassName={'active'}
-                    previousClassName="page-item"
-                    nextClassName="page-item"
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousLinkClassName="page-link"
-                    nextLinkClassName="page-link"
-                    disabledClassName="disabled"
-                />
             </div>
         );
     }
@@ -129,8 +96,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchNumPagesAsync: (shopId) => dispatch(fetchNumPagesAsync(shopId)),
-    fetchItemsStartAsync: (shopId, pageNum) => dispatch(fetchItemsStartAsync(shopId, pageNum)),
     fetchShopStartAsync: (shopId) => dispatch(fetchShopStartAsync(shopId)),
 });
 

@@ -100,18 +100,6 @@ export const setNumPages = (numPages) => ({
     payload: numPages,
 });
 
-export const fetchNumPagesAsync = (shopId) => {
-    return (dispatch) => {
-        fetch(`${API_SHOPS_URL}/${shopId}/items/`)
-            .then((response) => response.json())
-            .then((parsedResponse) => {
-                const items = parsedResponse.results;
-                dispatch(setNumPages(Math.round(parsedResponse.count / items.length)));
-            })
-            .catch((error) => dispatch(fetchItemsFailure(error.message)));
-    };
-};
-
 export const fetchItemsStartAsync = (shopId, pageNum=1) => {
     return (dispatch) => {
         dispatch(fetchItemsStart());
