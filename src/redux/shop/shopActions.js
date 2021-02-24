@@ -95,11 +95,6 @@ export const fetchItemsFailure = (errorMessage) => ({
     payload: errorMessage,
 });
 
-export const setNumPages = (numPages) => ({
-    type: ShopItemsActionTypes.SET_NUM_PAGES,
-    payload: numPages,
-});
-
 export const fetchItemsStartAsync = (shopId, pageNum=1) => {
     return (dispatch) => {
         dispatch(fetchItemsStart());

@@ -14,7 +14,6 @@ import {
     selectDisplayingAllItemsStatus, selectDisplayingLimitedItems, selectDisplayingItemsFromCategory,
     selectDisplayingAboutComponentStatus,
 
-    selectNumPages,
     selectItemList,
     selectLimitedItems,
     selectItemsFromCategory, selectDisplayingItemsByRequestFromSearchForm, selectItemsByRequestFromSearchForm,
@@ -81,8 +80,6 @@ const mapStateToProps = createStructuredSelector({
     shop: selectShopObj,
     isItemsLoaded: selectIsItemsLoading,
     shopItems: selectItemList,
-
-    numPages: selectNumPages,
 
     limitedItems: selectLimitedItems,
     itemsFromCategory: selectItemsFromCategory,

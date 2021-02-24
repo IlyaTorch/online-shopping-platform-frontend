@@ -29,11 +29,6 @@ export const selectDisplayingAboutComponentStatus = createSelector(
     (shop) => shop.displayAbout,
 );
 
-export const selectNumPages = createSelector(
-    [selectShop],
-    (shop) => shop.numPages,
-);
-
 export const selectItemList = createSelector(
     [selectShop],
     (shop) => shop.itemsList,

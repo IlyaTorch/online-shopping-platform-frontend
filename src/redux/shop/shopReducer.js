@@ -7,8 +7,6 @@ const INITIAL_STATE = {
     itemsList: null,
     isItemsFetching: false,
 
-    numPages: 0,
-
     shopObj: null,
     isShopFetching: false,
 
@@ -67,12 +65,7 @@ const shopReducer = (state=INITIAL_STATE, action) => {
             errorMessage: action.payload,
         };
 
-    case ShopItemsActionTypes.SET_NUM_PAGES:
-        return {
-            ...state,
-            numPages: action.payload,
-        };
-        // ///FETCHING CATEGORIES//////
+    // ///FETCHING CATEGORIES//////
     case ShopItemsActionTypes.FETCH_CATEGORIES_START:
         return {
             ...state,
